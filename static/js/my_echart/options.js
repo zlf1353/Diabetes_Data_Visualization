@@ -250,7 +250,10 @@ function bloodPressureOption (data) {
           opacity: 0
         },
         itemStyle: {
-          color: "#b894fa",
+          color: (valve) => {
+            if (valve['data']['1'] > 70) return "#a6a498"
+            else return "#b894fa"
+          },
           borderColor: "#fff",
           borderWidth: 1,
           shadowColor: "rgba(0, 0, 0, .3)"
@@ -566,6 +569,7 @@ function diseaseRelationshipOption (data) {
       '#0780cf', '#765005', '#e75840', '#26ccd8', '#3685fe',
       '#9977ef', '#f5616f', '#f7b13f', '#f9e264', '#50c48f'
     ]][2];
+  //console.log('123423',data)
   let points = data[2];
   let links = data[1];
   var data_points = [];
@@ -1156,7 +1160,7 @@ function parallelOption () {
 function radarOption (data) {
   // var features_str = ['diseaseInfo', 'liverFunction', 'others'];
   // var data = [80, 70, 30, 85, 25];
-  var indicatorname = ['diseaseInfo', 'liverFunction', 'others'];
+  var indicatorname = ['diseaseInfo', 'Physical examination index', 'patients information'];
   var maxdata = [100, 100, 100, 100, 100];
 
   function contains (arrays, obj) {

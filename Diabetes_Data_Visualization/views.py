@@ -24,7 +24,7 @@ def scatterData(request):
         left, right = request.POST['left'], request.POST['right']
         left, right = int(left), int(right)
         ret = data_process.scatterData(left, right)
-        print(ret)
+        #print(ret)
         ret = {'data': ret}
         ret = JsonResponse(ret)
         return ret

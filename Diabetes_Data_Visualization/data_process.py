@@ -154,7 +154,7 @@ def relationshipData():
                 if d1 and d2:
                     res[s1][s2] += 1
 
-    # print(res)
+    print([infos, res, points])
     return [infos, res, points]
 
 
@@ -207,7 +207,7 @@ def biochemicalIndexesData():
                 res[info] += 1
 
     res = dict(res)
-    #print(res)
+    # print(res)
     return res
     # return [infos, res]
 
@@ -235,11 +235,11 @@ def getPatientInfo(id):
                 if info in row:
                     infos_dict[info] = int(row[info])
             break
-    #print(infos_dict)
+    # print(infos_dict)
     res = ''
     for k, v in infos_dict.items():
         res += f'{k}: {v}\n'
-    #print(res)
+    # print(res)
     return res
 
 
@@ -372,7 +372,7 @@ def getAbnormalAttr(id):
                         data[re_attr[x]].append(x)
             break
     data = dict(data)
-    #print(data)
+    # print(data)
 
     return id, data
 
@@ -424,23 +424,6 @@ liverFunction = [
     'LDH_L',
     'TBILI',
     'TP',
-]
-# kidneyFunction = [
-#     'BU',
-#     'SCR',
-#     'SUA',
-# ]
-# bloodSugarRelated = [
-#     'GLU',
-#     'HBA1C',
-# ]
-# biochemistryInfo = [
-#     'HDL_C',
-#     'LDL_C',
-#     'TC',
-#     'TG',
-# ]
-others = [
     'APTT',
     'FBG',
     'PT',
@@ -458,6 +441,32 @@ others = [
     'GLU',
     'HBA1C',
 ]
+# kidneyFunction = [
+#     'BU',
+#     'SCR',
+#     'SUA',
+# ]
+# bloodSugarRelated = [
+#     'GLU',
+#     'HBA1C',
+# ]
+# biochemistryInfo = [
+#     'HDL_C',
+#     'LDL_C',
+#     'TC',
+#     'TG',
+# ]
+others = [
+    'AGE',
+    'BMI',
+    'BP_HIGH',
+    'BP_LOW',
+    'HEIGHT',
+    'MARITAL_STATUS',
+    'NATION',
+    'SEX',
+    'WEIGHT',
+]
 
 
 # allInfo = diseaseInfo + liverFunction + kidneyFunction + bloodSugarRelated + biochemistryInfo + others
@@ -471,7 +480,8 @@ def getRadarData(id):
             id_row = row
             break
     features = [diseaseInfo, liverFunction, others]
-    features_str = ['diseaseInfo', 'liverFunction', 'others']
+    features_str = ['diseaseInfo',
+                    'liverFunction', 'others']
     dimsSimilarityData = []
     for i, feature in enumerate(features):
         try:
@@ -487,9 +497,9 @@ def getRadarData(id):
         Case_ID = df.iloc[a[i]]['Case_ID']
         data.append(list(dimsSimilarityData[a[i]] * 10000 // 1 / 100))
         data.append(Case_ID)
-        #print( 'sdssa',list(dimsSimilarityData[a[i]] * 10000 // 1 / 100),type( list(dimsSimilarityData[a[i]] * 10000 // 1 / 100)),)
-        #print('datasd',Case_ID, dimsSimilarityData[a[i]])
-    print('datasss',data)
+        # print( 'sdssa',list(dimsSimilarityData[a[i]] * 10000 // 1 / 100),type( list(dimsSimilarityData[a[i]] * 10000 // 1 / 100)),)
+        # print('datasd',Case_ID, dimsSimilarityData[a[i]])
+    print('datasss', data)
     return data
 
 

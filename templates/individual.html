@@ -96,7 +96,7 @@
               {#dataType: "json",#}
               success: function (result) {
                   let data = result['data'];
-                  console.log('get_radar_info',data[1]);
+                  //console.log('get_radar_info',data[1]);
                   radar_line.setOption(radarLineOption(eval(data[0].join("+")) / data[0].length));
                   document.getElementById("radar_line_id").innerHTML = 'ID:'+data[1];
                   /*radar_line1.setOption(radarLineOption(eval(data[1].join("+")) / data[1].length));
@@ -162,7 +162,6 @@
         -->
       </div>
     </div>
-  </div>
 
   <div class="col-sm-6">
     <div class="card mb-0">
@@ -172,7 +171,8 @@
     </div><!-- end card-->
   </div>
 </div>
-<div class="row">
+<!--
+  <div class="row">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
     <div class="card mb-3">
       <div class="card-body">
@@ -181,6 +181,8 @@
     </div>
   </div>
 </div>
+-->
+
 
 <script type="text/javascript">
   radar_line = echarts.init(document.getElementById('radar_line'));
