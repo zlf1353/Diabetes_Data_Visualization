@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block mainbody %}
+    <script>
+        const isNullOrUndefined = obj => obj === null || obj === undefined;
+        $(document).ready(function () {
+            $.ajaxSetup({
+                data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+            });
+        });
+    </script>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div>
+                        <div style="float: left">
+                            <div id="bar_fig"></div>
+                            <div id="blood_pressure_fig"></div>
+                        </div>
+                        <div style="float: left">
+                            <div id="scatter_fig"></div>
+                        </div>
+                        <div style="float: left">
+                            <div id="disease_relationship_fig"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <div style="float: left">
+                            <div id="biochemical_indexes_fig"></div>
+                        </div>
+                        <div style="float: left">
+                            <div id="parallel_fig"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card mb-3">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <div class="card mb-3">
+                <div class="card-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/my_echart/options.js' %}"></script>
+    <script type="text/javascript" >
+    
+    </script>
+    <script type="text/javascript">
+        let bar_fig = echarts.init(document.getElementById('bar_fig'));
+        bar_fig.resize({
+            width: 800,
+            height: 300
+        });
+
+        
+        let bar_data = {{ num_diabetes_complication|safe }};
+        for (let i of bar_data){
+          i[2]=i[2]+i[4];
+          i[1]=i[1]+i[3];
+        }
+        bar_fig.setOption(barLineOption(bar_data, 5));
+        bar_fig.on('legendselectchanged', function (params) {
+            male = params.selected['男性患并发症'] || params.selected['男性无并发症'];
+            female = params.selected['女性患并发症'] || params.selected['女性无并发症'];
+            if (male && female) {
+                bar_fig.setOption(barLineOption(bar_data, 5));
+            } else if (female) {
+                bar_fig.setOption(barLineOption(bar_data, 6));
+            } else if (male) {
+                bar_fig.setOption(barLineOption(bar_data, 7));
+            }
+
+        });
+        bar_fig.on('datazoom', function (params) {
+            let index = bar_fig._chartsMap["_ec_\u0000患病比例\u00000_series.line"]._data._approximateExtent.x;
+            //console.log(index);
+            $.ajax({
+                type: "POST",
+                data: {left: index[0], right: index[1]},
+                url: "{% url 'num_diabetes_complication' %}",
+                cache: false,
+                /*dataType: "json",*/
+                success: function (result) {
+                    /*alert(result);*/
+                    //console.log(result);
+                    let option = {
+                        series: [
+                            {
+                                name: "女性",
+                                data: result.data[0]
+                            },
+                            {
+                                name: "男性",
+                                data: result.data[1]
+                            },
+                        ]
+                    };
+                    scatter_fig.setOption(option);
+                    /*bar_fig.setOption(option);*/
+                },
+                error: function (XMLHttpRequest, textStatus) {
+                    alert("ajax: " + textStatus);
+                }
+            });
+        });
+        
+        let scatter_fig = echarts.init(document.getElementById('scatter_fig'));
+        scatter_fig.resize({
+            width: 600,
+            height: 300
+        });
+        scatter_fig.setOption(scatterOption({{ scatterData|safe }}));
+
+        let blood_pressure_fig = echarts.init(document.getElementById('blood_pressure_fig'));
+        blood_pressure_fig.resize({
+            width: 800,
+            height: 400
+        });
+        let bloodPressureData = {{ bloodPressureData|safe }};
+        for(let i of bloodPressureData){
+          i[4]=(i[1]+i[2])/2+10
+        }
+        /*console.log(bloodPressureData);*/
+        blood_pressure_fig.setOption(bloodPressureOption(bloodPressureData));
+
+        let disease_relationship_fig = echarts.init(document.getElementById('disease_relationship_fig'));
+        /*console.log(disease_relationship_fig);*/
+        disease_relationship_fig.resize({
+            width: 500,
+            height: 600
+        });
+        let diseaseRelationshipData = {{ diseaseRelationshipData|safe }};
+        /*console.log(diseaseRelationshipData);*/
+        disease_relationship_fig.setOption(diseaseRelationshipOption(diseaseRelationshipData));
+
+        let biochemical_indexes_fig = echarts.init(document.getElementById('biochemical_indexes_fig'));
+        biochemical_indexes_fig.resize({
+            width: 500,
+            height: 250
+        });
+        let biochemicalIndexesData={{ biochemicalIndexesData|safe }};
+        biochemical_indexes_fig.setOption(biochemicalIndexesOption(biochemicalIndexesData));
+
+        let parallel_fig = echarts.init(document.getElementById('parallel_fig'));
+        parallel_fig.resize({
+            width:800,
+            height:250
+        });
+        parallel_fig.setOption(parallelOption());
+    </script>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block mainbody %}
+<script src="{% static 'js/my_echart/options.js' %}"></script>
+<script>
+  const isNullOrUndefined = obj => obj === null || obj === undefined;
+  $(document).ready(function () {
+      $.ajaxSetup({
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+      });
+
+      function search_func() {
+          const val = $('#input_patient_id').val();
+          if (val === "")
+              return;
+          console.log(val);
+          $.ajax({
+              type: "POST",
+              data: {id: val},
+              url: "{% url 'get_patient_info' %}",
+              cache: false,
+              {#dataType: "json",#}
+              success: function (result) {
+                  let data = result['data'];
+                  //对患者信息处理替换
+                  var newdata = data.split('\n')
+                  for (let i = 0; i < newdata.length; i++) {
+                    newdata[i] = newdata[i].split(': ')
+                  }
+                  newdata[0][0] = 'ID'
+                  while (newdata[0][1].length < 4) {
+                    newdata[0][1] = '0'+newdata[0][1].slice(0)
+                  }
+                  //console.log(typeof (newdata[i][1]))
+                  newdata[1][0] = '姓名'
+                  newdata[1][1] = newdata[1][1] || '——'
+                  newdata[2][0] = '年龄'
+                  newdata[3][0] = '性别'
+                  if (newdata[3][1] == '0') {
+                    newdata[3][1] = '男'
+                  } else {
+                    newdata[3][1] = '女'
+                  }
+                  newdata[3][0] = '性别'
+                  newdata[4][0] = '民族'
+                  if (newdata[4][1] == '0') {
+                    newdata[4][1] = '汉'
+                  } else {
+                    newdata[4][1] = '非汉'
+                  }
+                  newdata[5][0] = '婚姻状况'
+                  if (newdata[5][1] == '0') {
+                    newdata[5][1] = '未婚'
+                  } else {
+                    newdata[5][1] = '已婚'
+                  }
+                  newdata[6][0] = '身高'
+                  newdata[6][1] += 'cm'
+                  newdata[7][0] = '体重'
+                  newdata[7][1] += 'kg'
+                  newdata[8][0] = '血压'
+                  newdata[8][1] = newdata[9][1] + '/' + newdata[8][1]
+                  newdata.splice(9,1)
+                  newdata.splice(2,1,['问诊时间:'],['最近血糖:'],['\n基本信息'],newdata[2])
+                  for (let i = 0; i < newdata.length; i++) {
+                    newdata[i] = newdata[i].join(':')
+                  }
+                  newdata = newdata.join('      ')
+                  //end
+                  $('#text_patient_info').val(newdata);
+              },
+              error: function (XMLHttpRequest, textStatus) {
+                  {#alert("ajax: " + textStatus);#}
+              }
+          });
+          $.ajax({
+              type: "POST",
+              data: {id: val},
+              url: "{% url 'get_abnormal_attr' %}",
+              cache: false,
+              {#dataType: "json",#}
+              success: function (result) {
+                  let data = result['data'];
+                  console.log(data);
+                  abnormal_attr_fig.setOption(abnormalAttrOption(data));
+              },
+              error: function (XMLHttpRequest, textStatus) {
+                  {#alert("ajax: " + textStatus);#}
+              }
+          });
+          $.ajax({
+              type: "POST",
+              data: {id: val},
+              url: "{% url 'get_radar_info' %}",
+              cache: false,
+              {#dataType: "json",#}
+              success: function (result) {
+                  let data = result['data'];
+                  console.log('get_radar_info',data[1]);
+                  radar_line.setOption(radarLineOption(eval(data[0].join("+")) / data[0].length));
+                  document.getElementById("radar_line_id").innerHTML = 'ID:'+data[1];
+                  /*radar_line1.setOption(radarLineOption(eval(data[1].join("+")) / data[1].length));
+                  radar_line2.setOption(radarLineOption(eval(data[2].join("+")) / data[2].length));*/
+                  radar_fig.setOption(radarOption(data[0]));
+                  /*radar_fig1.setOption(radarOption(data[1]));
+                  radar_fig2.setOption(radarOption(data[2]));*/
+              },
+              error: function (XMLHttpRequest, textStatus) {
+                  {#alert("ajax: " + textStatus);#}
+              }
+          });
+      }
+
+      $('#input_patient_id').bind('input propertychange', search_func);
+      $('#btn_search').click(search_func);
+  });
+</script>
+<!-- 搜索卡片区 -->
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-sm-6">
+        <!-- 输入框搜索 -->
+        <span class="glyphicon glyphicon-search"></span>
+        <div class="input-group">
+          <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
+          <span class="input-group-btn">
+            <button type="button" id="btn_search" class="btn btn-default"> 
+              <span class="glyphicon glyphicon-search">
+                Search
+              </span>
+            </button>
+          </span><!-- end input-group-->
+        </div>
+      </div>      
+      <div class="col-sm-6"></div>  
+
+    </div>
+  </div>
+</div>
+<!-- 个人信息文本区 -->
+<div class="card mb-3">
+  <textarea id="text_patient_info" style="height: 280px" required
+            class="form-control">
+          </textarea>
+</div>
+
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card mb-0">
+      <div class="card-body">
+        <div>
+          <div id ="radar_line_id" style="float: left;margin-top: 43px;"></div>
+          <div id="radar_line" style="float: left;width: 400px;height: 100px;"></div></div>
+        </div>
+        <div id="radar_fig"></div>
+        <!--
+          <div id="radar_line1"></div>
+          <div id="radar_fig1"></div>
+          <div id="radar_line2"></div>
+          <div id="radar_fig2"></div>
+        -->
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6">
+    <div class="card mb-0">
+      <div class="card-body">
+        <div id="abnormal_attr_fig"></div>
+      </div>
+    </div><!-- end card-->
+  </div>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+    <div class="card mb-3">
+      <div class="card-body">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  radar_line = echarts.init(document.getElementById('radar_line'));
+  radar_line.resize({
+    width: $('radar_line').width(),
+    height: 100
+  });
+  //radar_line_id =document.getElementById('radar_line_id');
+  /*radar_line1 = echarts.init(document.getElementById('radar_line1'));
+  radar_line1.resize({
+    width: $('radar_line1').width(),
+    height: 100
+  });
+  radar_line2 = echarts.init(document.getElementById('radar_line2'));
+  radar_line2.resize({
+    width: $('radar_line2').width(),
+    height: 100
+  });*/
+  radar_fig = echarts.init(document.getElementById('radar_fig'));
+  radar_fig.resize({
+    width: $('radar_fig').width(),
+    height: 300
+  });
+  /*radar_fig1 = echarts.init(document.getElementById('radar_fig1'));
+  radar_fig1.resize({
+    width: $('radar_fig1').width(),
+    height: 300
+  });
+  radar_fig2 = echarts.init(document.getElementById('radar_fig2'));
+  radar_fig2.resize({
+    width: $('radar_fig2').width(),
+    height: 300
+  });*/
+  abnormal_attr_fig = echarts.init(document.getElementById('abnormal_attr_fig'));
+  abnormal_attr_fig.resize({
+    width: $('abnormal_attr_fig').width(),
+    height: 400
+  });
+
+
+</script>
+{% endblock %}
