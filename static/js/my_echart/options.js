@@ -290,7 +290,7 @@ function bloodPressureOption (data) {
           color: (value) => {
             //console.log(value)
             if (value['data'][10]) return "#FF6161"
-            else return "#b894fa"
+            else return "#91cc75"
           },
           borderColor: "#fff",
           borderWidth: 1,
@@ -302,6 +302,23 @@ function bloodPressureOption (data) {
         encode: {
           x: 0,
           y: 2
+        },
+        markLine: {
+          silent: true,
+          symbol: ['none', 'none'],
+          label: {
+            show: false
+          },
+          data: [{
+            yAxis: 60
+          }, {
+            yAxis: 140
+          }],
+          lineStyle: {
+            normal: {
+              type: 'dotted',
+            },
+          },
         }
       },
       {
@@ -329,7 +346,7 @@ function bloodPressureOption (data) {
           color: (value) => {
             //console.log(value)
             if (value['data'][11]) return "#FF6161"
-            else return "#b894fa"
+            else return "#91cc75"
           },
           borderColor: "#fff",
           borderWidth: 1,
@@ -372,7 +389,7 @@ function bloodPressureOption (data) {
         showAllSymbol: true,
         yAxisIndex: 1,
         symbol: 'circle',
-        symbolSize: 10,
+        symbolSize: 15,
         lineStyle: {
           opacity: 0
         },
@@ -406,7 +423,7 @@ function bloodPressureOption (data) {
           barBorderColor: "rgba(0,0,0,0)",
           color: "rgba(0,0,0,0)"
         },
-        barWidth: "1%",
+        barWidth: "8%",
         emphasis: {
           itemStyle: {
             barBorderColor: "rgba(0,0,0,0)",
