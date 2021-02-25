@@ -377,7 +377,12 @@ function bloodPressureOption (data) {
           opacity: 0
         },
         itemStyle: {
-          color: "#6E61E3",
+          color: (value) => {
+            console.log(typeof (value['data'][6]), value['data'][6])
+            if (value['data'][6] == 0) return "RGB(110,97,227,1)"
+            else if (value['data'][6] == 1) return "RGB(110,97,227,0.7)"
+            else return "RGB(110,97,227,0.3)"
+          },
           borderColor: "#fff",
           borderWidth: 1,
           shadowColor: "rgba(0, 0, 0, .3)",
