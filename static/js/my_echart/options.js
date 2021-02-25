@@ -159,7 +159,7 @@ function bloodPressureOption (data) {
       top: 4,
     },
     grid: {
-      left: 40,
+      left: 70,
       right: 55,
       top: 64,
       bottom: 40,
@@ -167,8 +167,7 @@ function bloodPressureOption (data) {
     },
     xAxis: [{
       type: "category",
-      name: 'CaseID',
-      nameLocation: 'end',
+      name: '',
       axisLine: {
         show: true
       },
@@ -191,6 +190,7 @@ function bloodPressureOption (data) {
         type: "value",
         show: true,
         name: '血压',
+        position: 'left',
         nameLocation: 'end',
         splitNumber: 5,
         splitLine: {
@@ -204,16 +204,46 @@ function bloodPressureOption (data) {
         },
         axisLabel: {
           show: true,
-          margin: 20,
+          margin: 5,
           textStyle: {
-            color: "#111"
-          }
+            color: "#111",
+          },
+          formatter: '{value} mmHg'
         },
         axisTick: {
           show: true
         }
+      },
+      {
+        type: "value",
+        show: true,
+        name: '体重',
+
+        nameLocation: 'end',
+        splitNumber: 5,
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: "rgba(255,255,255,1)"
+          }
+        },
+        axisLine: {
+          show: true
+        },
+        axisLabel: {
+          show: true,
+          margin: 4,
+          textStyle: {
+            color: "#111"
+          },
+          formatter: '{value} kg'
+        },
+        axisTick: {
+          show: true,
+        }
       }
     ],
+
     dataZoom: [
       {
         type: 'slider',
@@ -238,51 +268,30 @@ function bloodPressureOption (data) {
         type: "line",
         showAllSymbol: true,
         symbol: (value) => {
-          //console.log(value)
-          if (value[1] < 90) {
+          //console.log(value, 'value')
+          if (value[10]) {
             return 'triangle'
           } else {
             return 'circle'
           }
         },
-        symbolSize: 10,
+        symbolSize: (value) => {
+          //console.log(value, 'value')
+          if (value[10]) {
+            return 15
+          } else {
+            return 10
+          }
+        },
         lineStyle: {
           opacity: 0
         },
         itemStyle: {
-          color: (valve) => {
-            if (valve['data']['1'] > 70) return "#a6a498"
+          color: (value) => {
+            //console.log(value)
+            if (value['data'][10]) return "#FF6161"
             else return "#b894fa"
           },
-          borderColor: "#fff",
-          borderWidth: 1,
-          shadowColor: "rgba(0, 0, 0, .3)"
-        },
-        tooltip: {
-          show: true
-        },
-        encode: {
-          x: 0,
-          y: 1
-        }
-      },
-      {
-        name: "收缩压",
-        type: "line",
-        showAllSymbol: true,
-        symbol: (value) => {
-          if (value[2] > 130) {
-            return 'triangle'
-          } else {
-            return 'circle'
-          }
-        },
-        symbolSize: 10,
-        lineStyle: {
-          opacity: 0
-        },
-        itemStyle: {
-          color: "#a6a498",
           borderColor: "#fff",
           borderWidth: 1,
           shadowColor: "rgba(0, 0, 0, .3)"
@@ -295,6 +304,45 @@ function bloodPressureOption (data) {
           y: 2
         }
       },
+      {
+        name: "收缩压",
+        type: "line",
+        showAllSymbol: true,
+        symbol: (value) => {
+          if (value[11]) {
+            return 'triangle'
+          } else {
+            return 'circle'
+          }
+        },
+        symbolSize: (value) => {
+          if (value[11]) {
+            return 15
+          } else {
+            return 10
+          }
+        },
+        lineStyle: {
+          opacity: 0
+        },
+        itemStyle: {
+          color: (value) => {
+            //console.log(value)
+            if (value['data'][11]) return "#FF6161"
+            else return "#b894fa"
+          },
+          borderColor: "#fff",
+          borderWidth: 1,
+          shadowColor: "rgba(0, 0, 0, .3)"
+        },
+        tooltip: {
+          show: true
+        },
+        encode: {
+          x: 0,
+          y: 3
+        }
+      }/*,
       {
         name: "",
         type: "line",
@@ -317,28 +365,32 @@ function bloodPressureOption (data) {
           x: 0,
           y: 4
         }
-      }, ,
+      }*/,
       {
-        name: "年龄",
+        name: "体重",
         type: "line",
-        showAllSymbol: false,
-        symbol: 'none',
+        showAllSymbol: true,
+        yAxisIndex: 1,
+        symbol: 'circle',
+        symbolSize: 10,
         lineStyle: {
           opacity: 0
         },
         itemStyle: {
-          color: "#a6a491",
+          color: "#6E61E3",
           borderColor: "#fff",
           borderWidth: 1,
-          shadowColor: "rgba(0, 0, 0, .3)"
-        },
-        tooltip: {
-          formatter: '{b0}: {c0}<br />{b1}: {c1}',
-          show: true
+          shadowColor: "rgba(0, 0, 0, .3)",
+          opacity: 1,
+          /*
+          opacity: (value) => {
+            console.log(value)
+            return 0
+          }*/
         },
         encode: {
           x: 0,
-          y: 3
+          y: 5
         }
       },
       {
@@ -358,21 +410,28 @@ function bloodPressureOption (data) {
         },
         encode: {
           x: 0,
-          y: 1
+          y: 2
         },
         tooltip: {
           show: false
         }
       },
-      {
+      {//竖线区
         name: "",
         type: "bar",
-        stack: "A",
+        stack: "A",//同个类目轴上系列配置相同的stack值可以堆叠放置-为了不重叠变高
         itemStyle: {
-          barBorderColor: "green",
-          color: "green"
+          //borderColor: "green",
+          color: (value) => {
+            //console.log(value, value['data'][1])
+            if (value['data'][1]) {
+              //console.log('data', data[1], typeof (data[1]))
+              return '#FB9461 '
+            } else return "#516FF1"
+          }
+
         },
-        barWidth: "1%",
+        barWidth: "2%",
         emphasis: {
           itemStyle: {
             barBorderColor: "rgba(0,0,0,0)",
@@ -381,7 +440,7 @@ function bloodPressureOption (data) {
         },
         encode: {
           x: 0,
-          y: 3
+          y: 4
         },
         tooltip: {
           show: false
@@ -1160,7 +1219,7 @@ function parallelOption () {
 function radarOption (data) {
   // var features_str = ['diseaseInfo', 'liverFunction', 'others'];
   // var data = [80, 70, 30, 85, 25];
-  var indicatorname = ['diseaseInfo', 'Physical examination index', 'patients information'];
+  var indicatorname = ['diseaseInfo', 'PhysicalIndex', 'PatientsInfo'];
   var maxdata = [100, 100, 100, 100, 100];
 
   function contains (arrays, obj) {

@@ -91,9 +91,18 @@ def bloodPressureData():
     res = []
     for index, row in df.iterrows():
         Case_ID = int(row['Case_ID'])
+        label = int(row['label'])
         BP_LOW = int(row['BP_LOW'])
         BP_HIGH = int(row['BP_HIGH'])
-        res.append([Case_ID, BP_LOW, BP_HIGH, BP_HIGH - BP_LOW])
+        WEIGHT = int(row['WEIGHT'])
+        BMI1 = int(row['BMI1'])
+        AGE = int(row['AGE'])
+        SEX = int(row['SEX'])
+        BMI = int(row['BMI'])
+        BP_LOW1 = int(row['BP_LOW1'])
+        BP_HIGH1 = int(row['BP_HIGH1'])
+        res.append([Case_ID, label, BP_LOW, BP_HIGH, BP_HIGH -
+                    BP_LOW, WEIGHT, BMI1, AGE, SEX, BMI, BP_LOW1, BP_HIGH1])
     # print(res)
     return res
 
