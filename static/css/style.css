@@ -301,7 +301,7 @@ a {
 
 .main-sidebar {
   top: 50px;
-  width: 250px;
+  width: 220px;
   z-index: 10;
   background: #262D33;
   bottom: 70px;
@@ -311,7 +311,7 @@ a {
   position: absolute; }
 
 .content-page {
-  margin-left: 250px;
+  margin-left: 220px;
   overflow: hidden; }
   
 .content-page .content {

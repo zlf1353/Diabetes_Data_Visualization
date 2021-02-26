@@ -86,21 +86,7 @@ function barLineOption (data, percent_y) {
           x: 0,
           y: 2
         }
-      }/*,
-          {
-              type: "bar",
-              barWidth: "60%",
-              stack: true,
-              name: "男性患并发症",
-              itemStyle: {
-                  color: "rgba(196, 155, 10, 1)"
-              },
-              yAxisIndex: 1,
-              encode: {
-                  x: 0,
-                  y: 4
-              }
-          }*/,
+      },
       {
         type: "bar",
         barWidth: "60%",
@@ -114,21 +100,7 @@ function barLineOption (data, percent_y) {
           x: 0,
           y: 1
         }
-      },/*
-          {
-              type: "bar",
-              barWidth: "60%",
-              stack: true,
-              name: "男性无并发症",
-              itemStyle: {
-                  color: "rgba(64, 119, 123, 1)"
-              },
-              yAxisIndex: 1,
-              encode: {
-                  x: 0,
-                  y: 3
-              }
-          },*/
+      },
       {
         type: "line",
         smooth: true,
@@ -152,17 +124,29 @@ function bloodPressureOption (data) {
       // text: "血压图"
     },
     tooltip: {
-      trigger: "axis"
+      trigger: "axis",
+      formatter: (value) => {
+        console.log(value['0']['data'])
+        let sex = ''
+        if (value['0']['data'][8]) {
+          sex = '女'
+        } else { sex = '男' }
+        return 'Case_ID:' + value['0']['data'][0] + '<br />' + '性别:' + sex + '<br />' +
+          '年龄:' + value['0']['data'][7] + '<br />' +
+          'BMI:' + value['0']['data'][9] + '<br />' +
+          '血压（收缩压、舒张压）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
+      }
     },
     legend: {
       left: 0,
       top: 4,
+      show: false
     },
     grid: {
       left: 70,
       right: 55,
       top: 64,
-      bottom: 40,
+      bottom: 50,
       containLabel: false
     },
     xAxis: [{
@@ -183,7 +167,7 @@ function bloodPressureOption (data) {
       splitLine: {
         show: false
       },
-      boundaryGap: false,
+      boundaryGap: true,
     }],
     yAxis: [
       {
@@ -251,7 +235,8 @@ function bloodPressureOption (data) {
         realtime: true,
         xAxisIndex: 0,
         start: 0,
-        end: 5
+        end: 5,
+        bottom: '-1px'
       },
       {
         type: 'inside',
@@ -275,6 +260,7 @@ function bloodPressureOption (data) {
             return 'circle'
           }
         },
+        symbolRotate: 180,
         symbolSize: (value) => {
           //console.log(value, 'value')
           if (value[10]) {
@@ -359,30 +345,7 @@ function bloodPressureOption (data) {
           x: 0,
           y: 3
         }
-      }/*,
-      {
-        name: "",
-        type: "line",
-        showAllSymbol: true,
-        symbol: 'circle',
-        symbolSize: 10,
-        lineStyle: {
-          opacity: 0
-        },
-        itemStyle: {
-          color: "#a6a491",
-          borderColor: "#fff",
-          borderWidth: 1,
-          shadowColor: "rgba(0, 0, 0, .3)"
-        },
-        tooltip: {
-          show: false
-        },
-        encode: {
-          x: 0,
-          y: 4
-        }
-      }*/,
+      },
       {
         name: "体重",
         type: "line",
@@ -395,26 +358,25 @@ function bloodPressureOption (data) {
         },
         itemStyle: {
           color: (value) => {
-            console.log(typeof (value['data'][6]), value['data'][6])
-            if (value['data'][6] == 0) return "RGB(110,97,227,1)"
-            else if (value['data'][6] == 1) return "RGB(110,97,227,0.7)"
-            else return "RGB(110,97,227,0.3)"
+            //console.log(typeof (value['data'][6]), value['data'][6])
+            if (value['data'][6] == 0) return "#A79AF4"
+            else if (value['data'][6] == 1) return "#D5D2F6"
+            else return "#725DF4"
           },
           borderColor: "#fff",
           borderWidth: 1,
           shadowColor: "rgba(0, 0, 0, .3)",
-          opacity: 1,
-          /*
-          opacity: (value) => {
-            console.log(value)
-            return 0
-          }*/
+        },
+        tooltip: {
+          show: true
         },
         encode: {
           x: 0,
           y: 5
         }
       },
+
+
       {
         name: "",
         type: "bar",
@@ -443,23 +405,21 @@ function bloodPressureOption (data) {
         type: "bar",
         stack: "A",//同个类目轴上系列配置相同的stack值可以堆叠放置-为了不重叠变高
         itemStyle: {
-          //borderColor: "green",
           color: (value) => {
-            //console.log(value, value['data'][1])
+            //console.log(value['data'][1])
             if (value['data'][1]) {
-              //console.log('data', data[1], typeof (data[1]))
               return '#FB9461 '
             } else return "#516FF1"
           }
 
         },
-        barWidth: "2%",
-        emphasis: {
+        barWidth: "8%",
+        /*emphasis: {
           itemStyle: {
             barBorderColor: "rgba(0,0,0,0)",
             color: "rgba(0,0,0,0)"
           }
-        },
+        },*/
         encode: {
           x: 0,
           y: 4

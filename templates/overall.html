@@ -14,9 +14,35 @@
     <div class="card mb-3">
       <div class="card-body">
         <div>
-          <div style="float: left">
+          <div style="float: left;width: 100%;">
             <div id="bar_fig"></div>
-            <div id="blood_pressure_fig"></div>
+            <div class="row">
+              <div class="col-sm-10">
+                <div id="blood_pressure_fig"></div>
+              </div>
+              <div class="col-sm-2">
+                <div style="margin-top: 50px;">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 按BMI升序
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">按年龄升序
+                    </label>
+                  </div>
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">按ID升序
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 选项卡区-->
+
           </div>
           <div style="float: left">
             <div id="scatter_fig"></div>
@@ -131,7 +157,7 @@
   let blood_pressure_fig = echarts.init(document.getElementById('blood_pressure_fig'));
   blood_pressure_fig.resize({
     width: 800,
-    height: 400
+    height: 410
   });
   let bloodPressureData = {{ bloodPressureData| safe }};
   console.log(bloodPressureData);
