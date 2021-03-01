@@ -167,60 +167,6 @@ def relationshipData():
     return [infos, res, points]
 
 
-def biochemicalIndexesData():
-    infos = [
-        'ALB',
-        'ALP',
-        'ALT',
-        'AST',
-        'DBILI',
-        'GGT',
-        'GLO',
-        'IBILI',
-        'LDH_L',
-        'TBILI',
-        'TP',
-        'APTT',
-        'FBG',
-        'FIBRIN',
-        'PT',
-        'PTA',
-        'CA199',
-        'ESR',
-        'LPS',
-        'ALB_CR',
-        'BU',
-        'BUN',
-        'SCR',
-        'SUA',
-        'UCR',
-        'UPR_24',
-        'HDL_C',
-        'LDL_C',
-        'LP_A',
-        'TC',
-        'TG',
-        'HB',
-        'PCV',
-        'PLT',
-        'GLU_2H',
-        'GSP',
-        'HBA1C',
-        'INS',
-    ]
-    res = defaultdict(int)
-    for index, row in df.iterrows():
-        for info in infos:
-            x = f'{info}1'
-            if x in row and int(row[x]) == 1:
-                res[info] += 1
-
-    res = dict(res)
-    # print(res)
-    return res
-    # return [infos, res]
-
-
 def getPatientInfo(id):
     infos = [
         "Case_ID",
@@ -514,8 +460,3 @@ def getRadarData(id):
 
 if __name__ == '__main__':
     getRadarData(1)
-    # getAbnormalAttr(21)
-    # print(scatterData())
-    # res = num_diabetes_complication()
-    # res = np.array(res)
-    # print(np.sum(res))
