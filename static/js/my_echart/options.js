@@ -125,17 +125,27 @@ function bloodPressureOption (data) {
     },
     tooltip: {
       trigger: "axis",
+      hideDelay: () => {
+        if (isXLabel) return 2000
+        else return 0
+      },
       formatter: (value) => {
-        console.log(value['0']['data'])
-        let sex = ''
-        if (value['0']['data'][8]) {
-          sex = '女'
-        } else { sex = '男' }
-        return 'Case_ID:' + value['0']['data'][0] + '<br />' + '性别:' + sex + '<br />' +
-          '年龄:' + value['0']['data'][7] + '<br />' +
-          'BMI:' + value['0']['data'][9] + '<br />' +
-          '血压（收缩压、舒张压）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
+        if (isXLabel) {
+          return '查看详情'
+        } else {
+          let sex = ''
+          if (value['0']['data'][8]) {
+            sex = '女'
+          } else { sex = '男' }
+          return 'Case_ID:' + value['0']['data'][0] + '<br />' + '性别:' + sex + '<br />' +
+            '年龄:' + value['0']['data'][7] + '<br />' +
+            'BMI:' + value['0']['data'][9] + '<br />' +
+            '血压（收缩压、舒张压）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
+        }
+
       }
+      // console.log(value)
+
     },
     legend: {
       left: 0,
@@ -151,6 +161,7 @@ function bloodPressureOption (data) {
     },
     xAxis: [{
       type: "category",
+      triggerEvent: true,
       name: '',
       axisLine: {
         show: true
@@ -162,7 +173,7 @@ function bloodPressureOption (data) {
         }
       },
       axisLabel: {
-        color: "#111"
+        color: "#111",
       },
       splitLine: {
         show: false
@@ -659,7 +670,7 @@ function diseaseRelationshipOption (data) {
   //         },
   //     });
   // });
-  console.log(data_points);
+  //console.log(data_points);
   i = 0;
   for (var p1 in links) {
     for (var p2 in links[p1]) {

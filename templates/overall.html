@@ -86,9 +86,6 @@
 </div>
 <script src="{% static 'js/my_echart/options.js' %}"></script>
 <script type="text/javascript">
-
-</script>
-<script type="text/javascript">
   let bar_fig = echarts.init(document.getElementById('bar_fig'));
   bar_fig.resize({
     width: 800,
@@ -159,9 +156,41 @@
     width: 800,
     height: 410
   });
+
+  //isXLabel判断是在x轴还是在对象上
+  var isXLabel = false
+  //点击跳转到详情页
+  blood_pressure_fig.on('click', function (params) {
+    console.log(params)
+  });
+  //hover显示按钮
+  blood_pressure_fig.on('mousemove', function (params) {
+    //当鼠标在x轴上时
+    if (params.componentType == 'xAxis') {
+      isXLabel = true;
+      console.log(params)
+      //记下位置
+      var offsetX = params.event.offsetX + 10;
+      var offsetY = params.event.offsetY + 10;
+      //附上提示框
+      blood_pressure_fig.dispatchAction({
+        type: 'showTip',
+        seriesIndex: 0,
+        dataIndex: params.value - 1,
+        position: [offsetX, offsetY]
+      });
+    }
+
+  });
+  blood_pressure_fig.on('mouseover', function (params) {
+    isXLabel = false;
+    console.log(params)
+  });
+
+
   let bloodPressureData = {{ bloodPressureData| safe }};
-  console.log(bloodPressureData);
-  blood_pressure_fig.setOption(bloodPressureOption(bloodPressureData));
+  let bloodPressureOption_option = bloodPressureOption(bloodPressureData)
+  blood_pressure_fig.setOption(bloodPressureOption_option);
 
   let disease_relationship_fig = echarts.init(document.getElementById('disease_relationship_fig'));
   disease_relationship_fig.resize({
