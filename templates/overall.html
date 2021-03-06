@@ -48,9 +48,13 @@
           <div id="scatter_fig"></div>
         </div>
         -->
-        <div style="float: left">
+        <!--
+          关系图
+          <div style="float: left">
           <div id="disease_relationship_fig"></div>
         </div>
+        -->
+
       </div>
       <!--
         <div class="card-body">
@@ -67,6 +71,11 @@
 
     </div>
   </div>
+  {% block ralationbody %}
+  <div>
+    继承失败
+  </div>
+  {% endblock ralationbody %}
 </div>
 <script src="{% static 'js/my_echart/options.js' %}"></script>
 <script type="text/javascript">

@@ -319,7 +319,9 @@ a {
     margin-top: 50px; }
 
 .main-sidebar.left {
-  position: absolute; }
+  position: absolute; 
+  /*融合需要*/
+  height: 1570px;}
 
 body.adminbody .main-sidebar.left {
   bottom: 0px;
@@ -471,6 +473,17 @@ body.adminbody .main-sidebar.left {
     left: 250px;
     background-color: #fff; }
 
+.adminbody{
+  /*display: inline-block;
+  overflow:hidden;*/
+  height: auto;
+}
+
+   
+#main{
+  /*height: 100%;*/
+}
+    
 #main.enlarged .menu-title {
   display: none; }
 #main.enlarged .menu-arrow {
