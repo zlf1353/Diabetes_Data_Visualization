@@ -1059,7 +1059,7 @@ function abnormalAttrOption (data) {
     symbolSize: 20,
     draggable: "true",
   });
-  console.log(data);
+  //console.log(data);
   const n = 10;
   let i = 0;
   for (var x in data) {

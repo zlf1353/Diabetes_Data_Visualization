@@ -2,6 +2,11 @@
 {% load static %}
 {% block mainbody %}
 <script src="{% static 'js/my_echart/options.js' %}"></script>
+<head>
+	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
 <script>
   const isNullOrUndefined = obj => obj === null || obj === undefined;
   $(document).ready(function () {
@@ -13,7 +18,7 @@
           const val = $('#input_patient_id').val();
           if (val === "")
               return;
-          console.log(val);
+          //console.log(val);
           $.ajax({
               type: "POST",
               data: {id: val},
@@ -81,7 +86,7 @@
               {#dataType: "json",#}
               success: function (result) {
                   let data = result['data'];
-                  console.log(data);
+                  //console.log(data);
                   abnormal_attr_fig.setOption(abnormalAttrOption(data));
               },
               error: function (XMLHttpRequest, textStatus) {
@@ -111,6 +116,11 @@
 
       $('#input_patient_id').bind('input propertychange', search_func);
       $('#btn_search').click(search_func);
+      $('#dropdownMenu1').on('shown.bs.dropdown', function () {
+        alert('在下拉菜单完全显示出来，并且等 CSS 动画完成之后触发！');
+    }
+      );
+
   });
 </script>
 <!-- 搜索卡片区 -->
@@ -119,13 +129,12 @@
     <div class="row">
       <div class="col-sm-6">
         <!-- 输入框搜索 -->
-        <span class="glyphicon glyphicon-search"></span>
         <div class="input-group">
           <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
           <span class="input-group-btn">
             <button type="button" id="btn_search" class="btn btn-default"> 
               <span class="glyphicon glyphicon-search">
-                Search
+                
               </span>
             </button>
           </span><!-- end input-group-->
@@ -147,6 +156,13 @@
   <div class="col-sm-6">
     <div class="card mb-0">
       <div class="card-body">
+        <!--下拉菜单-->
+        <select id='selection' onchange="changeroles(this)">
+          <option value ="1">患者1</option>
+          <option value ="2">患者2</option>
+          <option value="3">患者3</option>
+        </select>
+        <!--end下拉菜单-->
         <div>
           <div id ="radar_line_id" style="float: left;margin-top: 43px;"></div>
           <div id="radar_line" style="float: left;width: 400px;height: 100px;"></div></div>
@@ -172,6 +188,9 @@
 
 
 <script type="text/javascript">
+  function changeroles(role){
+    console.log(role.value)
+  }
   radar_line = echarts.init(document.getElementById('radar_line'));
   radar_line.resize({
     width: $('radar_line').width(),
