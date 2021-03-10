@@ -8,6 +8,8 @@
 	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <script>
+  //相似患者的数据
+  var radar_info_data
   const isNullOrUndefined = obj => obj === null || obj === undefined;
   $(document).ready(function () {
       $.ajaxSetup({
@@ -71,7 +73,7 @@
                     newdata[i] = newdata[i].join(':')
                   }
                   newdata = newdata.join('      ')
-                  //end
+                  //end对患者信息处理替换
                   $('#text_patient_info').val(newdata);
               },
               error: function (XMLHttpRequest, textStatus) {
@@ -100,12 +102,14 @@
               cache: false,
               {#dataType: "json",#}
               success: function (result) {
-                  let data = result['data'];
+                  radar_info_data = result['data'];
                   //console.log('get_radar_info',data[1]);
-                  radar_line.setOption(radarLineOption(eval(data[0].join("+")) / data[0].length));
-                  document.getElementById("radar_line_id").innerHTML = 'ID:'+data[1];
+                  //绘制相似患者比例图
+                  radar_line.setOption(radarLineOption(eval(radar_info_data[0].join("+")) / radar_info_data[0].length));
+                  //获取相似患者id
+                  document.getElementById("radar_line_id").innerHTML = 'ID:'+radar_info_data[1];
                   /*radar_line1.setOption(radarLineOption(eval(data[1].join("+")) / data[1].length));*/
-                  radar_fig.setOption(radarOption(data[0]));
+                  radar_fig.setOption(radarOption(radar_info_data[0]));
                   /*radar_fig1.setOption(radarOption(data[1]));*/
               },
               error: function (XMLHttpRequest, textStatus) {
@@ -116,10 +120,6 @@
 
       $('#input_patient_id').bind('input propertychange', search_func);
       $('#btn_search').click(search_func);
-      $('#dropdownMenu1').on('shown.bs.dropdown', function () {
-        alert('在下拉菜单完全显示出来，并且等 CSS 动画完成之后触发！');
-    }
-      );
 
   });
 </script>
@@ -158,9 +158,9 @@
       <div class="card-body">
         <!--下拉菜单-->
         <select id='selection' onchange="changeroles(this)">
-          <option value ="1">患者1</option>
-          <option value ="2">患者2</option>
-          <option value="3">患者3</option>
+          <option value ="1">最相似患者1</option>
+          <option value ="3">最相似患者2</option>
+          <option value="5">最相似患者3</option>
         </select>
         <!--end下拉菜单-->
         <div>
@@ -189,7 +189,11 @@
 
 <script type="text/javascript">
   function changeroles(role){
-    console.log(role.value)
+    var radar_info_id=role.value
+    console.log(radar_info_data)
+    radar_line.setOption(radarLineOption(eval(radar_info_data[radar_info_id-1].join("+")) / radar_info_data[radar_info_id-1].length));
+    document.getElementById("radar_line_id").innerHTML = 'ID:'+radar_info_data[role.value];
+    radar_fig.setOption(radarOption(radar_info_data[radar_info_id-1]));
   }
   radar_line = echarts.init(document.getElementById('radar_line'));
   radar_line.resize({
