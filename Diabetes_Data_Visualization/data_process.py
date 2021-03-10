@@ -423,17 +423,19 @@ def getRadarData(id):
         except Exception as e:
             print(e)
     dimsSimilarityData = np.array(dimsSimilarityData).T
-    
+    #print('dimsSimilarityData',dimsSimilarityData)
     a = np.argsort(-np.sum(dimsSimilarityData, axis=1))
-    print('a',a)
-    for i in range(1, 4):
+    #print('a',a)
+    for i in range(1, 2):
         Case_ID = df.iloc[a[i]]['Case_ID']
         data.append(list(dimsSimilarityData[a[i]] * 10000 // 1 / 100))
         data.append(Case_ID)
+    for i in range(0, 300):
+        data.append(list(dimsSimilarityData[i] * 10000 // 1 / 100))
     return data
 
 
 
 if __name__ == '__main__':
     getRadarData(1)
-    print('dimsSimilarityData',dimsSimilarityData)
+    
