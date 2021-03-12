@@ -163,62 +163,8 @@ def relationshipData():
                 if d1 and d2:
                     res[s1][s2] += 1
 
-    print([infos, res, points])
+    #print([infos, res, points])
     return [infos, res, points]
-
-
-def biochemicalIndexesData():
-    infos = [
-        'ALB',
-        'ALP',
-        'ALT',
-        'AST',
-        'DBILI',
-        'GGT',
-        'GLO',
-        'IBILI',
-        'LDH_L',
-        'TBILI',
-        'TP',
-        'APTT',
-        'FBG',
-        'FIBRIN',
-        'PT',
-        'PTA',
-        'CA199',
-        'ESR',
-        'LPS',
-        'ALB_CR',
-        'BU',
-        'BUN',
-        'SCR',
-        'SUA',
-        'UCR',
-        'UPR_24',
-        'HDL_C',
-        'LDL_C',
-        'LP_A',
-        'TC',
-        'TG',
-        'HB',
-        'PCV',
-        'PLT',
-        'GLU_2H',
-        'GSP',
-        'HBA1C',
-        'INS',
-    ]
-    res = defaultdict(int)
-    for index, row in df.iterrows():
-        for info in infos:
-            x = f'{info}1'
-            if x in row and int(row[x]) == 1:
-                res[info] += 1
-
-    res = dict(res)
-    # print(res)
-    return res
-    # return [infos, res]
 
 
 def getPatientInfo(id):
@@ -361,15 +307,6 @@ for k, v in attr.items():
 
 
 def getAbnormalAttr(id):
-    # myGraphData = [
-    #     {"parentNode": "张三", "childNodes": ["小明", "小华", "小杰", "小婷", "小妍", "小飞"]},
-    #     {"parentNode": "小明", "childNodes": ["小王", "小赵", "小钱"]},
-    #     {"parentNode": "小华", "childNodes": ["小孙", "小李", "小周"]},
-    #     {"parentNode": "小杰", "childNodes": ["小吴", "小郑"]},
-    #     {"parentNode": "小婷", "childNodes": ["小谢", "小潘"]},
-    #     {"parentNode": "小妍", "childNodes": ["小苏", "小陈"]},
-    #     {"parentNode": "小飞", "childNodes": ["小郭", "小彭"]}
-    # ]
     data = defaultdict(list)
     for index, row in df.iterrows():
         if int(row['Case_ID']) == int(id):
@@ -450,21 +387,6 @@ liverFunction = [
     'GLU',
     'HBA1C',
 ]
-# kidneyFunction = [
-#     'BU',
-#     'SCR',
-#     'SUA',
-# ]
-# bloodSugarRelated = [
-#     'GLU',
-#     'HBA1C',
-# ]
-# biochemistryInfo = [
-#     'HDL_C',
-#     'LDL_C',
-#     'TC',
-#     'TG',
-# ]
 others = [
     'AGE',
     'BMI',
@@ -501,21 +423,19 @@ def getRadarData(id):
         except Exception as e:
             print(e)
     dimsSimilarityData = np.array(dimsSimilarityData).T
+    #print('dimsSimilarityData',dimsSimilarityData)
     a = np.argsort(-np.sum(dimsSimilarityData, axis=1))
-    for i in range(1, 4):
+    #print('a',a)
+    for i in range(1, 2):
         Case_ID = df.iloc[a[i]]['Case_ID']
         data.append(list(dimsSimilarityData[a[i]] * 10000 // 1 / 100))
         data.append(Case_ID)
-        # print( 'sdssa',list(dimsSimilarityData[a[i]] * 10000 // 1 / 100),type( list(dimsSimilarityData[a[i]] * 10000 // 1 / 100)),)
-        # print('datasd',Case_ID, dimsSimilarityData[a[i]])
-    print('datasss', data)
+    for i in range(0, 300):
+        data.append(list(dimsSimilarityData[i] * 10000 // 1 / 100))
     return data
+
 
 
 if __name__ == '__main__':
     getRadarData(1)
-    # getAbnormalAttr(21)
-    # print(scatterData())
-    # res = num_diabetes_complication()
-    # res = np.array(res)
-    # print(np.sum(res))
+    

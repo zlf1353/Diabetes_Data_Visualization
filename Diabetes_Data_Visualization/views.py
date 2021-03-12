@@ -15,8 +15,16 @@ def overall(request):
     ctx['scatterData'] = data_process.scatterData()
     ctx['bloodPressureData'] = data_process.bloodPressureData()
     ctx['diseaseRelationshipData'] = data_process.relationshipData()
-    ctx['biochemicalIndexesData'] = data_process.biochemicalIndexesData()
     return render(request, 'overall.html', ctx)
+
+
+def pienest(request):
+    ctx = {}
+    ctx['num_diabetes_complication'] = data_process.barData()
+    ctx['scatterData'] = data_process.scatterData()
+    ctx['bloodPressureData'] = data_process.bloodPressureData()
+    ctx['diseaseRelationshipData'] = data_process.relationshipData()
+    return render(request, 'pie-nest.html', ctx)
 
 
 def scatterData(request):
@@ -24,7 +32,7 @@ def scatterData(request):
         left, right = request.POST['left'], request.POST['right']
         left, right = int(left), int(right)
         ret = data_process.scatterData(left, right)
-        #print(ret)
+        # print(ret)
         ret = {'data': ret}
         ret = JsonResponse(ret)
         return ret
@@ -46,6 +54,7 @@ def getAbnormalAttr(request):
         ret = {'data': ret}
         ret = JsonResponse(ret)
         return ret
+
 
 def getRadarInfo(request):
     if request.POST:

@@ -1,0 +1,3797 @@
+<!--
+    THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/zh/editor.html?c=pie-nest
+-->
+{% extends 'overall.html' %}
+{% load static %}
+{% block ralationbody %}
+<html style="height: 100%">
+
+<body style="height: 100%; margin: 0;">
+  <div>
+    <div class='slider'>
+      <span>
+        重要性顺序筛选:
+      </span>
+      <span>
+        top 2
+      </span>
+      <input type="range" value="0">
+      <span>
+        top 22
+      </span>
+    </div>
+    <div class='piering'>
+      <div class='title' id="pieringtitle"></div>
+      <div class='pieringname'>PieRing元素</div>
+      <img src='https://i.loli.net/2021/03/06/dyCiqBeQ1NbRlT3.png' style="width: 180px;height: 150px;float:right;">
+    </div>
+  </div>
+
+
+  <div id="container" style="width: 100%;height: 700px;"></div>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+  <style>
+    .slider {
+      /**/
+      position: absolute;
+      right: 20px;
+      bottom: -300px;
+      z-index: 1;
+    }
+
+    .piering {
+      /*top: 50px;*/
+      position: absolute;
+      right: 20px;
+      bottom: -500px;
+      
+      z-index: 1;
+      width: 200px;
+      height: 200px;
+      border-radius: 4%;
+      border: 1px solid #000000;
+    }
+
+    .title {
+      width: 100%;
+      height: 25px;
+      line-height: 25px;
+      text-align: center;
+      color: #eee;
+      background-color: #333;
+      /*border-radius: 4px 4px 0 0;*/
+    }
+
+    .pieringname {
+      color: '#333';
+      height: 24;
+      align: 'left',
+    }
+  </style>
+  <script type="text/javascript">
+    var area = 1
+    var dom = document.getElementById("container");
+    var myChart = echarts.init(dom);
+    var app = {};
+    var num = 14
+    var ifshow = false
+    myChart.on('mouseover', function (params) {
+
+      let checkid = params.data.category
+      let name = checkid
+      checkid = Number(checkid.split('-')[0])
+      checkid -= 1
+      document.getElementById('pieringtitle').innerHTML = name
+      /* option.series[0].data[checkid].label = {
+         show: true,
+         backgroundColor: '#eee',
+         borderColor: '#777',
+         borderWidth: 1,
+         borderRadius: 4,
+         formatter: [
+           '{title|{b}}{abg|}',
+           '  {weatherHead|PirRing元素}',
+           '  {nephropathy|}',
+         ].join('\n'),
+         //position: 'outside',
+         rich: {
+           title: {
+             color: '#eee',
+             align: 'center',
+           },
+           abg: {
+             backgroundColor: '#333',
+             width: '100%',
+             align: 'right',
+             height: 25,
+             borderRadius: [4, 4, 0, 0],
+           },
+           nephropathy: {
+             height: 150,
+             align: 'left',
+             backgroundColor: {
+               image: 'D:/shenbing.png'
+             },
+           },
+           weatherHead: {
+             color: '#333',
+             height: 24,
+             align: 'left',
+           },
+         },
+       }
+       //console.log(o, 'aa\n', option.series[0].data[checkid].label)
+       myChart.setOption(option, true);*/
+
+    });
+    myChart.on('mouseout', function (params) {
+
+      let checkid = params.data.category
+      let name = checkid
+      checkid = Number(checkid.split('-')[0])
+      checkid -= 1
+      /*option.series[0].data[checkid].label.show = false
+      delete option.series[0].data[checkid].label
+      myChart.setOption(option, true);*/
+
+    });
+    var option;
+    var op = 0
+
+    option = {
+      backgroundColor: '#fff',
+      title: {
+        text: '',
+        x: 'center'
+      },
+      //—— 悬浮框 ——
+      tooltip: {
+        trigger: 'item',//'共病人数：{c}人'
+        formatter: (a, b) => {
+          if (a['data']['category']) {
+            op = 1
+            return '患病人数：' + a[`data`][`value`] + '人'
+          } else {
+            op = 0
+            return '共病人数：' + a[`data`][`value`] + '人'
+          }
+        },
+      },
+      legend: [{
+        orient: 'vertical',
+        x: '30px',
+        y: '30px',
+        itemWidth: 14,
+        itemHeight: 14,
+        data: [ //节点数据
+          {
+            name: '1-肾病',
+            icon: 'circle'
+          },
+          {
+            name: '2-冠心病',
+            icon: 'circle'
+          }, {
+            name: '3-下肢动脉病变',
+            icon: 'circle'
+          }, {
+            name: '4-其他肿瘤',
+            icon: 'circle',
+
+          }, {
+            name: '5-呼吸系统疾病',
+            icon: 'circle'
+          }, {
+            name: '6-肾衰',
+            icon: 'circle'
+          }, {
+            name: '7-高脂血',
+            icon: 'circle'
+          }, {
+            name: '8-妇科肿瘤',
+            icon: 'circle'
+          }, {
+            name: '9-其他内分泌疾病',
+            icon: 'circle'
+          }, {
+            name: '10-血液病',
+            icon: 'circle'
+          }, {
+            name: '11-其他慢性肝病',
+            icon: 'circle'
+          }, {
+            name: '12-肺部肿瘤',
+            icon: 'circle'
+          }, {
+            name: '13-消化系肿瘤',
+            icon: 'circle'
+          }, {
+            name: '14-脂肪肝',
+            icon: 'circle'
+          }, {
+            name: '15-高血压',
+            icon: 'circle'
+          }, {
+            name: '16-脑卒中',
+            icon: 'circle'
+          }, {
+            name: '17-颈动脉狭窄',
+            icon: 'circle'
+          }, {
+            name: '18-心律失常',
+            icon: 'circle'
+          }, {
+            name: '19-神经系统疾病',
+            icon: 'circle'
+          }, {
+            name: '20-内分泌腺瘤',
+            icon: 'circle'
+          }, {
+            name: '21-胆道疾病',
+            icon: 'circle'
+          }, {
+            name: '22-动脉粥样硬化',
+            icon: 'circle'
+          },
+        ],
+      },],
+      toolbox: {
+        show: true, //是否显示工具箱
+        feature: {
+          saveAsImage: true // 保存为图片，
+        }
+      },
+      //—— 其他设置 ——
+      animationDurationUpdate: 1500,
+      animationEasingUpdate: 'quinticInOut',
+      series: [{
+        type: 'graph',
+        layout: 'circular', // 'circular' ,force  不同的布局方式
+        symbolSize: 30, //图形的大小（示例中的圆的大小）
+        roam: true, //鼠标缩放及平移
+        focusNodeAdjacency: true, //是否在鼠标移到节点上的时候突出显示节点、节点的边和邻接节点
+        label: {
+          normal: {
+            show: true, //控制非高亮时节点名称是否显示
+            position: '',
+            fontSize: 18,
+            color: 'black'
+          },
+          emphasis: {
+            show: true, //控制非高亮时节点名称是否显示
+            position: 'right',
+            fontSize: 16,
+            color: 'black'
+          },
+        },
+        force: {
+          x: 'center',
+          y: 'center',
+          repulsion: 20,
+          edgeLength: [10, 3000],
+          friction: 0.6
+          //repulsion: 8000
+        },
+        //     edgeSymbol: ['circle', 'arrow'],//箭头
+        //    edgeSymbolSize: [6, 10],
+        edgeLabel: {
+          normal: {
+            show: false,
+            textStyle: {
+              fontSize: 12
+            },
+          },
+          emphasis: {
+            show: true,
+            textStyle: {
+              fontSize: 14 //边节点显示的字体大小
+            }
+          },
+        },
+
+        data: [ //节点数据
+          {
+            name: '1-肾病',
+            label: '',
+            value: 14,
+            draggable: true, //能否鼠标拖动
+            category: '1-肾病',
+            symbolSize: 137,
+            label: {},
+          }, {
+            name: '2-冠心病',
+            label: '',
+            value: '14',
+            draggable: true, //能否鼠标拖动
+            category: '2-冠心病',
+            symbolSize: 88,
+            label: {
+            },
+          }, {
+            name: '3-下肢动脉病变',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '3-下肢动脉病变',
+            symbolSize: 55,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '4-其他肿瘤',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '4-其他肿瘤',
+            symbolSize: 21,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '5-呼吸系统疾病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '5-呼吸系统疾病',
+            symbolSize: 50,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '6-肾衰',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '6-肾衰',
+            symbolSize: 25,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '7-高脂血',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '7-高脂血',
+            symbolSize: 50,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '8-妇科肿瘤',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '8-妇科肿瘤',
+            symbolSize: 4,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '9-其他内分泌疾病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '9-其他内分泌疾病',
+            symbolSize: 102,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '10-血液病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '10-血液病',
+            symbolSize: 54,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '11-其他慢性肝病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '11-其他慢性肝病',
+            symbolSize: 37,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '12-肺部肿瘤',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '12-肺部肿瘤',
+            symbolSize: 6,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '13-消化系肿瘤',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '13-消化系肿瘤',
+            symbolSize: 6,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '14-脂肪肝',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '14-脂肪肝',
+            symbolSize: 97,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '15-高血压',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '15-高血压',
+            symbolSize: 196,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '16-脑卒中',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '16-脑卒中',
+            symbolSize: 23,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '17-颈动脉狭窄',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '17-颈动脉狭窄',
+            symbolSize: 15,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '18-心律失常',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '18-心律失常',
+            symbolSize: 12,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '19-神经系统疾病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '19-神经系统疾病',
+            symbolSize: 15,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '20-内分泌腺瘤',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '20-内分泌腺瘤',
+            symbolSize: 6,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '21-胆道疾病',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '21-胆道疾病',
+            symbolSize: 40,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          }, {
+            name: '22-动脉粥样硬化',
+            label: '',
+            draggable: true, //能否鼠标拖动
+            category: '22-动脉粥样硬化',
+            symbolSize: 155,
+            label: {
+              normal: {
+                show: true, //控制非高亮时节点名称是否显示
+                position: '',
+                fontSize: 10,
+                color: 'black',
+              },
+            },
+          },
+        ],
+
+        links: [    //连线数据
+          {
+            source: '1-肾病',
+            target: '2-冠心病',
+            value: '35',
+            label: {
+              show: true,
+            },
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 35,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.4',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+          }, {
+            source: '1-肾病',
+            target: '3-下肢动脉病变',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 33,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.6',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '4-其他肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '5-呼吸系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 31,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.6',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '6-肾衰',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 25,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 22,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 54,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 50,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 22,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '13-消化系肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 46,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 114,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 16,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 9,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 28,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '1-肾病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 77,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '3-下肢动脉病变',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 11,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '4-其他肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '5-呼吸系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 13,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '6-肾衰',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 23,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 25,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 12,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '12-肺部肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '13-消化系肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 16,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 70,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '2-冠心病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 83,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '4-其他肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '5-呼吸系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '6-肾衰',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 31,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 15,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '12-肺部肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 25,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 38,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '18- 心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 12,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '3-下肢动脉病变',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 51,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '5-呼吸系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '6-肾衰',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '8-妇科肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '12-肺部肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '13-消化系肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 14,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '4-其他肿瘤',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '6-肾衰',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 12,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 17,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 14,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 9,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '12-肺部肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 16,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 36,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '5-呼吸系统疾病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 24,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '7-高脂血',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 9,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 20,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 24,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '6-肾衰',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 12,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 18,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 11,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '13-消化系肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 24,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 39,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '7-高脂血',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 33,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '8-妇科肿瘤',
+            target: '9-其他内分泌疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '8-妇科肿瘤',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '8-妇科肿瘤',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '10-血液病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 20,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 18,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 46,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 68,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 16,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '9-其他内分泌疾病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 62,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '11-其他慢性肝病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 8,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '12-肺部肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 11,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 46,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 5,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '10-血液病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 27,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '13-消化系肿瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 15,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 28,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '11-其他慢性肝病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 18,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '12-肺部肿瘤',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '12-肺部肿瘤',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '12-肺部肿瘤',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '12-肺部肿瘤',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '13-消化系肿瘤',
+            target: '14-脂肪肝',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '13-消化系肿瘤',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '13-消化系肿瘤',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '13-消化系肿瘤',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '13-消化系肿瘤',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '15-高血压',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 55,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 7,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 4,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 18,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '14-脂肪肝',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 51,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '16-脑卒中',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 21,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 13,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 10,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 28,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '15-高血压',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 114,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '16-脑卒中',
+            target: '17-颈动脉狭窄',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '16-脑卒中',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '16-脑卒中',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '16-脑卒中',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '16-脑卒中',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 17,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '17-颈动脉狭窄',
+            target: '18-心律失常',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '17-颈动脉狭窄',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '17-颈动脉狭窄',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '17-颈动脉狭窄',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 13,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '18-心律失常',
+            target: '19-神经系统疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '18-心律失常',
+            target: '21-胆道疾病',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 1,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '18-心律失常',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 9,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '19-神经系统疾病',
+            target: '20-内分泌腺瘤',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 2,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '19-神经系统疾病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 6,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '20-内分泌腺瘤',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 3,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }, {
+            source: '21-胆道疾病',
+            target: '22-动脉粥样硬化',
+            value: '',
+            label: '',
+            lineStyle: {
+              normal: {
+                show: true,
+                width: 24,
+                color: 'source',
+                curveness: 0.2,
+                type: 'solid', //线的类型 'solid'（实线）'dashed'（虚线）'dotted'（点线）
+                opacity: '0.8',
+                // 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。默认0.5
+              },
+            }
+
+          }
+        ],
+
+        categories: [ //节点数据
+          {
+            name: '1-肾病',
+            icon: 'circle'
+          },
+          {
+            name: '2-冠心病',
+            icon: 'circle'
+          }, {
+            name: '3-下肢动脉病变',
+            icon: 'circle'
+          }, {
+            name: '4-其他肿瘤',
+            icon: 'circle',
+
+          }, {
+            name: '5-呼吸系统疾病',
+            icon: 'circle'
+          }, {
+            name: '6-肾衰',
+            icon: 'circle'
+          }, {
+            name: '7-高脂血',
+            icon: 'circle'
+          }, {
+            name: '8-妇科肿瘤',
+            icon: 'circle'
+          }, {
+            name: '9-其他内分泌疾病',
+            icon: 'circle'
+          }, {
+            name: '10-血液病',
+            icon: 'circle'
+          }, {
+            name: '11-其他慢性肝病',
+            icon: 'circle'
+          }, {
+            name: '12-肺部肿瘤',
+            icon: 'circle'
+          }, {
+            name: '13-消化系肿瘤',
+            icon: 'circle'
+          }, {
+            name: '14-脂肪肝',
+            icon: 'circle'
+          }, {
+            name: '15-高血压',
+            icon: 'circle'
+          }, {
+            name: '16-脑卒中',
+            icon: 'circle'
+          }, {
+            name: '17-颈动脉狭窄',
+            icon: 'circle'
+          }, {
+            name: '18-心律失常',
+            icon: 'circle'
+          }, {
+            name: '19-神经系统疾病',
+            icon: 'circle'
+          }, {
+            name: '20-内分泌腺瘤',
+            icon: 'circle'
+          }, {
+            name: '21-胆道疾病',
+            icon: 'circle'
+          }, {
+            name: '22-动脉粥样硬化',
+            icon: 'circle'
+          },
+
+        ],
+
+
+
+      }]
+    }; // 使用刚指定的配置项和数据显示图表。
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+  </script>
+</body>
+
+</html>
+{% endblock %}
