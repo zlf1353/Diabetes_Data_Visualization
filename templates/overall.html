@@ -15,10 +15,12 @@
       <div class="card-body">
         <div style="float: left;width: 100%;">
           <div id="bar_fig"></div>
+          <!--血压哑铃图-->
           <div class="row">
             <div class="col-sm-10">
               <div id="blood_pressure_fig"></div>
             </div>
+            <!--选择框-->
             <div class="col-sm-2">
               <div style="margin-top: 50px;">
                 <div class="radio">
@@ -38,6 +40,7 @@
                 </div>
               </div>
             </div>
+            <!--end血压哑铃图-->
           </div>
 
           <!-- 选项卡区-->
@@ -154,14 +157,17 @@
   var isXLabel = false
   //点击跳转到详情页
   blood_pressure_fig.on('click', function (params) {
-    console.log(params)
+    if(params.componentType=='xAxis'){
+      console.log('click',params.value)
+      //页面跳转  ? 分隔实际的URL和参数 
+      window.location.href=`individual?id=${params.value}`
+    }
   });
   //hover显示按钮
   blood_pressure_fig.on('mousemove', function (params) {
     //当鼠标在x轴上时
     if (params.componentType == 'xAxis') {
       isXLabel = true;
-      console.log(params)
       //记下位置
       var offsetX = params.event.offsetX + 10;
       var offsetY = params.event.offsetY + 10;
@@ -177,7 +183,6 @@
   });
   blood_pressure_fig.on('mouseover', function (params) {
     isXLabel = false;
-    console.log(params)
   });
 
   let bloodPressureData = {{ bloodPressureData| safe }};

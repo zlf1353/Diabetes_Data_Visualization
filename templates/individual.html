@@ -2,25 +2,22 @@
 {% load static %}
 {% block mainbody %}
 <script src="{% static 'js/my_echart/options.js' %}"></script>
+
 <head>
-	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-	<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <script>
   //相似患者的数据
   var radar_info_data
   const isNullOrUndefined = obj => obj === null || obj === undefined;
-  $(document).ready(function () {
-      $.ajaxSetup({
-          data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
-      });
-
-      function search_func() {
+  function search_func() {
           const val = $('#input_patient_id').val();
           if (val === "")
               return;
           //console.log(val);
+          $('#search_similar').val("")
           $.ajax({
               type: "POST",
               data: {id: val},
@@ -116,54 +113,60 @@
                   {#alert("ajax: " + textStatus);#}
               }
           });
+          
       }
-
+  $(document).ready(function () {
+      $.ajaxSetup({
+          data: {csrfmiddlewaretoken: '{{ csrf_token }}'},
+      });
       $('#input_patient_id').bind('input propertychange', search_func);
       $('#btn_search').click(search_func);
 
   });
 </script>
-<!-- 搜索卡片区 -->
-<div class="card mb-3">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-sm-6">
-        <!-- 输入框搜索 -->
-        <div class="input-group">
-          <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
-          <span class="input-group-btn">
-            <button type="button" id="btn_search" class="btn btn-default"> 
-              <span class="glyphicon glyphicon-search">
-                
-              </span>
-            </button>
-          </span><!-- end input-group-->
-        </div>
-      </div>      
-      <div class="col-sm-6"></div>  
 
+<body>
+  <!-- 搜索卡片区 -->
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <!-- 输入框搜索 -->
+          <div class="input-group">
+            <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
+            <span class="input-group-btn">
+              <button type="button" id="btn_search" class="btn btn-default">
+                <span class="glyphicon glyphicon-search">
+
+                </span>
+              </button>
+            </span><!-- end input-group-->
+          </div>
+        </div>
+        <div class="col-sm-6"></div>
+
+      </div>
     </div>
   </div>
-</div>
-<!-- 个人信息文本区 -->
-<div class="card mb-3">
-  <textarea id="text_patient_info" style="height: 280px" required
-            class="form-control">
+  <!-- 个人信息文本区 -->
+  <div class="card mb-3">
+    <textarea id="text_patient_info" style="height: 280px" required class="form-control">
           </textarea>
-</div>
+  </div>
 
-<div class="row">
-  <div class="col-sm-6">
-    <div class="card mb-0">
-      <div class="card-body">
-        <!--下拉菜单-->
-        查看相似患者:<br>
-        <input type="text" value="" onchange="changeroles(this)">
-        <br>
-        <!--end下拉菜单-->
-        <div>
-          <div id ="radar_line_id" style="float: left;margin-top: 43px;"></div>
-          <div id="radar_line" style="float: left;width: 400px;height: 100px;"></div></div>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="card mb-0">
+        <div class="card-body">
+          <!--下拉菜单-->
+          查看相似患者:<br>
+          <input type="text" id='search_similar' onchange="changeroles(this)">
+          <br>
+          <!--end下拉菜单-->
+          <div>
+            <div id="radar_line_id" style="float: left;margin-top: 43px;"></div>
+            <div id="radar_line" style="float: left;width: 400px;height: 100px;"></div>
+          </div>
         </div>
         <div id="radar_fig"></div>
         <!--
@@ -175,26 +178,42 @@
       </div>
     </div>
 
-  <div class="col-sm-6">
-    <div class="card mb-0">
-      <div class="card-body">
-        <div id="abnormal_attr_fig"></div>
-      </div>
-    </div><!-- end card-->
+    <div class="col-sm-6">
+      <div class="card mb-0">
+        <div class="card-body">
+          <div id="abnormal_attr_fig"></div>
+        </div>
+      </div><!-- end card-->
+    </div>
   </div>
-</div>
+</body>
+
 
 
 <script type="text/javascript">
-  function changeroles(role){
-    var radar_info_id=role.value
-    radar_info_id=Number(radar_info_id)
-    console.log(radar_info_id)
-    console.log(radar_info_data[radar_info_id+1])
-    radar_line.setOption(radarLineOption(eval(radar_info_data[radar_info_id+1].join("+")) / radar_info_data[radar_info_id+1].length));
-    document.getElementById("radar_line_id").innerHTML = 'ID:'+radar_info_id;
-    radar_fig.setOption(radarOption(radar_info_data[radar_info_id+1]));
+  window.onload = function () {
+    var url = location.search
+    if(url.indexOf('?')!=-1){
+       url=url.split('=')
+      var id=Number(url[1])
+      console.log(id,typeof(id))
+      $('#input_patient_id').val(id)
+      search_func()
+    }
+   
   }
+  //切换对比角色，重新绘图
+  function changeroles(role) {
+    var radar_info_id = role.value
+    radar_info_id = Number(radar_info_id)
+    console.log(radar_info_id)
+    console.log(radar_info_data[radar_info_id + 1])
+    radar_line.setOption(radarLineOption(eval(radar_info_data[radar_info_id + 1].join("+")) / radar_info_data[radar_info_id + 1].length));
+    document.getElementById("radar_line_id").innerHTML = 'ID:' + radar_info_id;
+    radar_fig.setOption(radarOption(radar_info_data[radar_info_id + 1]));
+  }
+
+
   radar_line = echarts.init(document.getElementById('radar_line'));
   radar_line.resize({
     width: $('radar_line').width(),
