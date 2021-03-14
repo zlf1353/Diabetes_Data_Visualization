@@ -51,12 +51,11 @@
           <div id="scatter_fig"></div>
         </div>
         -->
-        <!--
-          关系图
-          <div style="float: left">
+        <!--关系图-->
+        <div style="float: left">
           <div id="disease_relationship_fig"></div>
         </div>
-        -->
+
 
       </div>
       <!--
@@ -157,10 +156,10 @@
   var isXLabel = false
   //点击跳转到详情页
   blood_pressure_fig.on('click', function (params) {
-    if(params.componentType=='xAxis'){
-      console.log('click',params.value)
+    if (params.componentType == 'xAxis') {
+      console.log('click', params.value)
       //页面跳转  ? 分隔实际的URL和参数 
-      window.location.href=`individual?id=${params.value}`
+      window.location.href = `individual?id=${params.value}`
     }
   });
   //hover显示按钮
@@ -185,16 +184,17 @@
     isXLabel = false;
   });
 
-  let bloodPressureData = {{ bloodPressureData| safe }};
+  let bloodPressureData = {{ bloodPressureData }};
   let bloodPressureOption_option = bloodPressureOption(bloodPressureData)
   blood_pressure_fig.setOption(bloodPressureOption_option);
   //疾病关系图
   let disease_relationship_fig = echarts.init(document.getElementById('disease_relationship_fig'));
   disease_relationship_fig.resize({
-    width: 500,
+    width: 800,
     height: 600
   });
   let diseaseRelationshipData = {{ diseaseRelationshipData| safe }};
+  console.log(diseaseRelationshipData)
   disease_relationship_fig.setOption(diseaseRelationshipOption(diseaseRelationshipData));
   /*
   let biochemical_indexes_fig = echarts.init(document.getElementById('biochemical_indexes_fig'));

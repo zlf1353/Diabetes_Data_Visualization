@@ -37,7 +37,7 @@
       /**/
       position: absolute;
       right: 20px;
-      bottom: -300px;
+      bottom: -1000px;
       z-index: 1;
     }
 
@@ -45,8 +45,8 @@
       /*top: 50px;*/
       position: absolute;
       right: 20px;
-      bottom: -500px;
-      
+      bottom: -1300px;
+
       z-index: 1;
       width: 200px;
       height: 200px;
@@ -81,61 +81,24 @@
 
       let checkid = params.data.category
       let name = checkid
-      checkid = Number(checkid.split('-')[0])
-      checkid -= 1
-      document.getElementById('pieringtitle').innerHTML = name
-      /* option.series[0].data[checkid].label = {
-         show: true,
-         backgroundColor: '#eee',
-         borderColor: '#777',
-         borderWidth: 1,
-         borderRadius: 4,
-         formatter: [
-           '{title|{b}}{abg|}',
-           '  {weatherHead|PirRing元素}',
-           '  {nephropathy|}',
-         ].join('\n'),
-         //position: 'outside',
-         rich: {
-           title: {
-             color: '#eee',
-             align: 'center',
-           },
-           abg: {
-             backgroundColor: '#333',
-             width: '100%',
-             align: 'right',
-             height: 25,
-             borderRadius: [4, 4, 0, 0],
-           },
-           nephropathy: {
-             height: 150,
-             align: 'left',
-             backgroundColor: {
-               image: 'D:/shenbing.png'
-             },
-           },
-           weatherHead: {
-             color: '#333',
-             height: 24,
-             align: 'left',
-           },
-         },
-       }
-       //console.log(o, 'aa\n', option.series[0].data[checkid].label)
-       myChart.setOption(option, true);*/
+
+      //判断是不是undefined的方法
+      if (typeof (checkid) != "undefined") {
+        checkid = Number(checkid.split('-')[0])
+        checkid -= 1
+        document.getElementById('pieringtitle').innerHTML = name
+      }
+
 
     });
     myChart.on('mouseout', function (params) {
 
       let checkid = params.data.category
       let name = checkid
-      checkid = Number(checkid.split('-')[0])
-      checkid -= 1
-      /*option.series[0].data[checkid].label.show = false
-      delete option.series[0].data[checkid].label
-      myChart.setOption(option, true);*/
-
+      if (checkid) {
+        checkid = Number(checkid.split('-')[0])
+        checkid -= 1
+      }
     });
     var option;
     var op = 0

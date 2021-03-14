@@ -650,35 +650,6 @@ function diseaseRelationshipOption (data) {
         return x.data.label; //设置提示框的内容和格式 节点和边都显示name属性
       },
     },
-    // legend: [{
-    //     orient: 'vertical',
-    //     x: 'left',
-    //     y: '50px',
-    //     itemWidth: 14,
-    //     itemHeight: 14,
-    //     // data: [ //节点数据
-    //     //
-    //     //     {
-    //     //         name: 'stu7',
-    //     //         icon: 'circle'
-    //     //     },
-    //     //     {
-    //     //         name: 'stu8',
-    //     //         icon: 'circle'
-    //     //     }, {
-    //     //         name: 'stu9',
-    //     //         icon: 'circle'
-    //     //     }, {
-    //     //         name: 'stu10',
-    //     //         icon: 'circle',
-    //     //
-    //     //     }, {
-    //     //         name: 'stu11',
-    //     //         icon: 'circle'
-    //     //     },
-    //     //
-    //     // ],
-    // },],
     toolbox: {
       show: true, //是否显示工具箱
       feature: {
@@ -735,27 +706,6 @@ function diseaseRelationshipOption (data) {
         data: data_points,
 
         links: data_links,
-        // categories: [ //节点数据
-        //     {
-        //         name: 'stu7',
-        //         icon: 'circle'
-        //     },
-        //     {
-        //         name: 'stu8',
-        //         icon: 'circle'
-        //     }, {
-        //         name: 'stu9',
-        //         icon: 'circle'
-        //     }, {
-        //         name: 'stu10',
-        //         icon: 'circle',
-        //
-        //     }, {
-        //         name: 'stu11',
-        //         icon: 'circle'
-        //     },
-        //
-        // ],
       }]
   };
 }

@@ -108,45 +108,44 @@ def bloodPressureData():
 
 
 def relationshipData():
-    infos = ['A_S',
-             'ARRHYTHMIAS',
-             'BILIARY_TRACT_DISEASE',
-             'BREAST_TUMOR',
-             'CAROTID_ARTERY_STENOSIS',
-             'CEREBRAL_APOPLEXTY',
+    infos = ['NEPHROPATHY',
              'CHD',
-             'CHF',
-             'CIRRHOSIS',
-             'CLD',
-             'DIGESTIVE_CARCINOMA',
-             'ENDOCRINE_DISEASE',
-             'FLD',
-             'GYNECOLGICAL_TUMOR',
-             'HEMATONOSIS',
-             'HYPERLIPIDEMIA',
-             'HYPERTENTION',
-             'INTRACRANIAL_TUMOR',
-             'label',
              'LEADDP',
-             'LUNG_TUMOR',
-             'MEN',
-             'MI',
-             'NEPHROPATHY',
-             'NERVOUS_SYSTEM_DISEASE',
              'OTHER_TUMOR',
-             'PANCREATIC_DISEASE',
-             'PCOS',
-             'PREGNANT',
-             'RENAL_FALIURE',
              'RESPIRATORY_SYSTEM_DISEASE',
-             'RHEUMATIC_IMMUNITY',
-             'UROLOGIC_NEOPLASMS', ]
+             'RENAL_FALIURE',
+             'HYPERLIPIDEMIA',
+             'GYNECOLGICAL_TUMOR',
+             'ENDOCRINE_DISEASE',
+             'HEMATONOSIS',
+             'CLD',
+             'LUNG_TUMOR',
+             'DIGESTIVE_CARCINOMA',
+             'FLD',
+             'HYPERTENTION',
+             'CEREBRAL_APOPLEXTY',
+             'CAROTID_ARTERY_STENOSIS',
+             'ARRHYTHMIAS',
+             'NERVOUS_SYSTEM_DISEASE',
+             'MEN',
+             'BILIARY_TRACT_DISEASE',
+             'A_S',
+             ]
+    '''
     points = defaultdict(int)
     for index, row in df.iterrows():
         for info in infos:
             if int(row[info]):
                 points[info] += 1
     points = dict(points)
+    '''
+    points = {}
+    for info in infos:
+        points[info] = 0
+    for index, row in df.iterrows():
+        for info in infos:
+            if int(row[info]):
+                points[info] += 1
     # res = defaultdict(lambda: defaultdict(int))
     res = {}
     for index, row in df.iterrows():
@@ -163,8 +162,15 @@ def relationshipData():
                 if d1 and d2:
                     res[s1][s2] += 1
 
-    #print([infos, res, points])
-    return [infos, res, points]
+    dis = {}
+    for info in infos:
+        dis[info] = 0
+    for index, row in df.iterrows():
+        for info in infos:
+            if int(row['label']):
+                if int(row[info]):
+                    dis[info] += 1
+    return [infos, res, points,dis]
 
 
 def getPatientInfo(id):
@@ -423,9 +429,9 @@ def getRadarData(id):
         except Exception as e:
             print(e)
     dimsSimilarityData = np.array(dimsSimilarityData).T
-    #print('dimsSimilarityData',dimsSimilarityData)
+    # print('dimsSimilarityData',dimsSimilarityData)
     a = np.argsort(-np.sum(dimsSimilarityData, axis=1))
-    #print('a',a)
+    # print('a',a)
     for i in range(1, 2):
         Case_ID = df.iloc[a[i]]['Case_ID']
         data.append(list(dimsSimilarityData[a[i]] * 10000 // 1 / 100))
@@ -435,7 +441,5 @@ def getRadarData(id):
     return data
 
 
-
 if __name__ == '__main__':
     getRadarData(1)
-    
