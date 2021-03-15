@@ -537,8 +537,8 @@ function scatterOption (data) {
           borderColor: "#000",
         },
         data: data[1]
-      },
 
+      },
     ]
   };
 }
@@ -1148,4 +1148,75 @@ function abnormalAttrOption (data) {
       }
     }]
   };
+}
+
+function pieRingOption (data, id) {
+  var index = ['NEPHROPATHY',
+    'CHD',
+    'LEADDP',
+    'OTHER_TUMOR',
+    'RESPIRATORY_SYSTEM_DISEASE',
+    'RENAL_FALIURE',
+    'HYPERLIPIDEMIA',
+    'GYNECOLGICAL_TUMOR',
+    'ENDOCRINE_DISEASE',
+    'HEMATONOSIS',
+    'CLD',
+    'LUNG_TUMOR',
+    'DIGESTIVE_CARCINOMA',
+    'FLD',
+    'HYPERTENTION',
+    'CEREBRAL_APOPLEXTY',
+    'CAROTID_ARTERY_STENOSIS',
+    'ARRHYTHMIAS',
+    'NERVOUS_SYSTEM_DISEASE',
+    'MEN',
+    'BILIARY_TRACT_DISEASE',
+    'A_S',]
+  console.log((data[2][index[1]]), id, index[1])
+  return {
+    legend: {
+      left: 0,
+      top: 0,
+      orient: 'vertical',
+      itemGap: 2,
+      itemHeight: 10,
+      itemWidth: 15
+    },
+    grid: {
+      left: '20%',
+      top: 0,
+    },
+    series: [
+      {
+        type: 'pie',
+        selectedMode: 'single',
+        radius: [0, '30%'],
+        label: {
+          position: 'inner',
+          fontSize: 14,
+          formatter: '{d}%'
+        },
+        labelLine: {
+          show: false
+        },
+        data: [
+          { value: data[3][index[id]], name: '有并发症' },
+          { value: data[2][index[id]] - data[3][index[id]], name: '无并发症' }
+        ]
+      },
+      {
+        type: 'pie',
+        radius: ['45%', '60%'],
+        label: {
+          position: 'inner',
+          formatter: '{d}%'
+        },
+        data: [
+          { value: data[2][index[id]], name: '患病比例' },
+          { value: 300 - data[2][index[id]], name: '无病比例' },
+        ]
+      }
+    ]
+  }
 }
