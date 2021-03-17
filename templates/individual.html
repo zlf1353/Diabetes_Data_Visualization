@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
   <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://echarts.baidu.com/resource/echarts-liquidfill-latest/dist/echarts-liquidfill.min.js"></script>
 </head>
 <script>
   //相似患者的数据
@@ -186,21 +187,291 @@
       </div><!-- end card-->
     </div>
   </div>
+  <!--绘图需要规定大小，否则无法获取dom元素-->
+  <div id='container' style="height: 550px;width: 550px;"></div>
 </body>
 
+<script>
+  var dom = document.getElementById("container");
+  var myChart = echarts.init(dom);
 
+  function roundDatas(num) {
+    var datas = [];
+    for (var i = 0; i < num; i++) {
+      datas.push({
+        name: 'circle' + i
+      });
+    }
+    return datas;
+  }
+  option = {
+    color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
+      '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+    tooltip: {
+      trigger: 'item'
+    },
+    focusNodeAdjacency: true,
+    series: [
+      {
+        name: '异常指标类型',
+        type: 'pie',
+        radius: [90, 150],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        label: {
+          show: false,
+          formatter: '{d}%',
+        },
+        data: [{
+          value: 1,
+          name: '肝功能'
+        },
+        {
+          value: 1,
+          name: '肾功能'
+        },
+        {
+          value: 2,
+          name: '血常规'
+        },
+        {
+          value: 1,
+          name: '生化指标'
+        },
+        {
+          value: 1,
+          name: '凝血相关'
+        },
+        {
+          value: 1,
+          name: '血糖相关'
+        },
+        ]
+      },
+      {
+        type: 'liquidFill',
+        itemStyle: {
+          opacity: 0.8,//波浪的透明度
+          shadowBlur: 10,//波浪的阴影范围
+          shadowColor: '#FFB931'//阴影颜色
+        },
+        radius: '25%',
+        //水波
+        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: "#FE8704"
+        },
+        {
+          offset: 1,
+          color: '#FFB931'
+        }
+        ])],
+        data: [{
+          value: 0.4,
+        }],
+        // background: '#000',
+        center: ['50%', '50%'],
+        backgroundStyle: {
+          color: '#fff'
+        },
+        label: {
+          normal: {
+            formatter: '',
+            textStyle: {
+              fontSize: 12
+            }
+          }
+        },
+        outline: {
+          itemStyle: {
+            borderColor: 'transparent',
+            borderWidth: 1
+          },
+          borderDistance: 0
+        }
+      },
+      {
+        type: 'graph',
+        tooltip: {},
+        ribbonType: true,
+        layout: 'circular',
+        hoverAnimation: false,
+        z: 0,
+        width: '60%',
+        height: '60%',
+        circular: {
+          rotateLabel: true
+        },
+        //这里可以调出不同效果
+        symbolSize: 5,
+        data: roundDatas(100),
+        itemStyle: {
+          color: '#555'
+        }
+      },
+      {
+        type: 'graph',
+        ribbonType: true,
+        layout: 'circular',
+        width: '60%',
+        height: '60%',
+        circular: {
+          rotateLabel: true
+        },
+        symbolSize: 30,
+        symbol: 'triangle',
+        label: {
+          normal: {
+            position: 'center'
+          }
+        },
+        itemStyle: {
+          normal: {
+            label: {
+              show: true,
+              color: '#555',
+            }
+          }
+        },
+        data: [{
+          name: '1-肾病',
+          symbolSize: 20,
+          value: 10,
+        }, {
+          name: '2-冠心病',
+          symbolSize: 20,
+          value: 15,
+        }, {
+          name: '22-动脉粥样硬化',
+          symbolSize: 20,
+          value: 20,
+        }],
+      },
+      {
+        type: 'graph',
+        tooltip: {},
+        ribbonType: true,
+        layout: 'circular',
+        hoverAnimation: true,
+        layoutAnimation: true,
+        width: '50%',
+        height: '50%',
+        circular: {
+          rotateLabel: true
+        },
+        symbolSize: 1,
+        data: roundDatas(300),
+        itemStyle: {
+          normal: {
+            label: {
+              show: false
+            },
+            color: '#6E7467',
+          },
+          emphasis: {
+            label: {
+              show: false,
+            }
+          }
+        },
+      },
+      {
+        type: 'graph',
+        tooltip: {},
+        ribbonType: true,
+        layout: 'circular',
+        width: '50%',
+        height: '50%',
+        symbolSize: 40,
+
+        startAngle: 0,
+        itemStyle: {
+          normal: {
+            label: {
+              show: true,
+              position: 'inside'
+            }
+          },
+
+        },
+
+        data: [{
+          name: 'HB',
+          "symbolSize": 40,
+          value: 20,
+          itemStyle: {
+            color: '#fac858',
+          }
+
+
+        }, {
+          name: 'PCV',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#fac858',
+          }
+
+        }, {
+          name: 'HDL_C',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#ee6666',
+          }
+
+        }, {
+          name: 'PTA',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#73c0de',
+          }
+
+        }, {
+          name: 'HBA1C',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#3ba272',
+          }
+
+        }, {
+          name: 'ALP',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#5470c6',
+          }
+
+
+        }, {
+          name: 'SCR',
+          "symbolSize": 40,
+          itemStyle: {
+            color: '#91cc75',
+          }
+
+
+        }
+
+        ],
+      }
+
+    ]
+  };
+
+  if (option && typeof option === 'object') {
+    myChart.setOption(option);
+  }
+</script>
 
 <script type="text/javascript">
   window.onload = function () {
     var url = location.search
-    if(url.indexOf('?')!=-1){
-       url=url.split('=')
-      var id=Number(url[1])
-      console.log(id,typeof(id))
+    if (url.indexOf('?') != -1) {
+      url = url.split('=')
+      var id = Number(url[1])
+      console.log(id, typeof (id))
       $('#input_patient_id').val(id)
       search_func()
     }
-   
+
   }
   //切换对比角色，重新绘图
   function changeroles(role) {
@@ -214,7 +485,7 @@
   }
 
 
-  radar_line = echarts.init(document.getElementById('radar_line'));
+  let radar_line = echarts.init(document.getElementById('radar_line'));
   radar_line.resize({
     width: $('radar_line').width(),
     height: 100
@@ -230,7 +501,7 @@
     width: $('radar_line2').width(),
     height: 100
   });*/
-  radar_fig = echarts.init(document.getElementById('radar_fig'));
+  let radar_fig = echarts.init(document.getElementById('radar_fig'));
   radar_fig.resize({
     width: $('radar_fig').width(),
     height: 300
@@ -245,7 +516,7 @@
     width: $('radar_fig2').width(),
     height: 300
   });*/
-  abnormal_attr_fig = echarts.init(document.getElementById('abnormal_attr_fig'));
+  let abnormal_attr_fig = echarts.init(document.getElementById('abnormal_attr_fig'));
   abnormal_attr_fig.resize({
     width: $('abnormal_attr_fig').width(),
     height: 400
