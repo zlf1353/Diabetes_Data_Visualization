@@ -1064,7 +1064,6 @@ function abnormalAttrOption (data) {
       }
     },
     tooltip: {
-      // formatter: '{b}'
       formatter: function (params, ticket, callback) {
         if (data.hasOwnProperty(params.name))
           return params.name + ': ' + data[params.name].length;
@@ -1075,34 +1074,6 @@ function abnormalAttrOption (data) {
       }
     },
     backgroundColor: '#FFFFFF',
-
-    // legend: {
-    //     show: true,
-    //     data: [
-    //         {
-    //             name: 'id',
-    //             icon: 'rect'
-    //         },
-    //         {
-    //             name: '特征类型',
-    //             icon: 'roundRect'
-    //         },
-    //         {
-    //             name: '特征',
-    //             icon: 'circle'
-    //         }],
-    //     textStyle: {
-    //         color: '#292421'
-    //     },
-    //     icon: 'circle',
-    //     type: 'scroll',
-    //     orient: 'horizontal',
-    //     left: 10,
-    //     top: 20,
-    //     bottom: 20,
-    //     itemWidth: 10,
-    //     itemHeight: 10
-    // },
     animationDuration: 0,
     animationEasingUpdate: 'quinticInOut',
     series: [{
@@ -1148,6 +1119,204 @@ function abnormalAttrOption (data) {
       }
     }]
   };
+}
+
+function  abnormalAttrOptiona(data) {
+  function roundDatas(num) {
+    var datas = [];
+    for (var i = 0; i < num; i++) {
+      datas.push({
+        name: 'circle' + i
+      });
+    }
+    return datas;
+  }
+  
+  var abnormalAttrData=[]
+  for(let item in data[1]){
+    abnormalAttrData.push({value:data[1][item].length,name:item})
+  }
+  let dis= []
+  for(let i of data[2]){
+    dis.push({name:i})
+  }
+  let details=[]
+  for(let i in data[1]){
+    for(let j of data[1][i])
+    details.push({name:j})
+  }
+  let angel=0
+  angel=details.length/360
+  //console.log(abnormalAttrData)
+  //console.log(details)
+  //console.log(details)
+  //console.log(data)
+  /*console.log(abnormalAttrData)
+  console.log(data[1])
+  console.log(data[1]['凝血相关'][0])
+  for(let i in data[1]){
+    console.log(typeof(i),i)
+    console.log(data[1][i].length)
+  }*/
+  return  {
+    backgroundColor: '#fff',
+    color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
+      '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
+    tooltip: {
+      trigger: 'item'
+    },
+    focusNodeAdjacency: true,
+    series: [
+      {
+        name: '异常指标类型',
+        type: 'pie',
+        startAngle:angel,
+        radius: [90, 150],
+        center: ['50%', '50%'],
+        roseType: 'radius',
+        label: {
+          show: true,
+          position:'inside',
+        },
+        data: abnormalAttrData
+      },
+      /*{
+        type: 'liquidFill',
+        itemStyle: {
+          opacity: 0.8,//波浪的透明度
+          shadowBlur: 10,//波浪的阴影范围
+          shadowColor: '#FFB931'//阴影颜色
+        },
+        radius: '25%',
+        //水波
+        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+          offset: 0,
+          color: "#FE8704"
+        },
+        {
+          offset: 1,
+          color: '#FFB931'
+        }
+        ])],
+        data: [{
+          value: 0.4,
+        }],
+        // background: '#000',
+        center: ['50%', '50%'],
+        backgroundStyle: {
+          color: '#fff'
+        },
+        label: {
+          normal: {
+            formatter: '',
+            textStyle: {
+              fontSize: 12
+            }
+          }
+        },
+        outline: {
+          itemStyle: {
+            borderColor: 'transparent',
+            borderWidth: 1
+          },
+          borderDistance: 0
+        }
+      },*/
+      {
+        //最外圈
+        type: 'graph',
+        tooltip: {
+          show:false
+        },
+        ribbonType: true,
+        layout: 'circular',
+        hoverAnimation: false,
+        z: 0,
+        width: '60%',
+        height: '60%',
+        circular: {
+          rotateLabel: true
+        },
+        //这里可以调出不同效果
+        symbolSize: 5,
+        data: roundDatas(100),
+        itemStyle: {
+          color: '#555'
+        }
+      },
+      {
+        type: 'graph',
+        ribbonType: true,
+        layout: 'circular',
+        width: '60%',
+        height: '60%',
+        circular: {
+          rotateLabel: true
+        },
+        symbolSize: 30,
+        symbol: 'triangle',
+        label: {
+          normal: {
+            position: 'center'
+          }
+        },
+        itemStyle: {
+          normal: {
+            label: {
+              show: true,
+              color: '#555',
+            }
+          }
+        },
+        data: dis,
+      },
+      {
+        type: 'graph',
+        tooltip: {},
+        ribbonType: true,
+        layout: 'circular',
+        hoverAnimation: true,
+        layoutAnimation: true,
+        width: '50%',
+        height: '50%',
+        circular: {
+          rotateLabel: true
+        },
+        symbolSize: 1,
+        data: roundDatas(300),
+        itemStyle: {
+          normal: {
+            label: {
+              show: false
+            },
+            color: '#6E7467',
+          },
+          emphasis: {
+            label: {
+              show: false,
+            }
+          }
+        },
+      },
+      {
+        type: 'graph',
+        //ribbonType: true,
+        startAngle:50,
+        layout: 'circular',
+        width: '50%',
+        height: '50%',
+        symbolSize: 40,
+            label: {
+              show: true,
+              position: 'inside'
+            },
+        
+        data: details
+      }/**/
+
+    ]
+  };
+
 }
 
 function pieRingOption (data, id) {

@@ -106,9 +106,7 @@ def bloodPressureData():
     # print(res)
     return res
 
-
-def relationshipData():
-    infos = ['NEPHROPATHY',
+disinfos = ['NEPHROPATHY',
              'CHD',
              'LEADDP',
              'OTHER_TUMOR',
@@ -131,6 +129,8 @@ def relationshipData():
              'BILIARY_TRACT_DISEASE',
              'A_S',
              ]
+def relationshipData():
+    
     '''
     points = defaultdict(int)
     for index, row in df.iterrows():
@@ -140,21 +140,21 @@ def relationshipData():
     points = dict(points)
     '''
     points = {}
-    for info in infos:
+    for info in disinfos:
         points[info] = 0
     for index, row in df.iterrows():
-        for info in infos:
+        for info in disinfos:
             if int(row[info]):
                 points[info] += 1
     # res = defaultdict(lambda: defaultdict(int))
     res = {}
     for index, row in df.iterrows():
-        for i1 in range(len(infos)):
-            s1 = infos[i1]
+        for i1 in range(len(disinfos)):
+            s1 = disinfos[i1]
             if s1 not in res:
                 res[s1] = {}
-            for i2 in range(i1 + 1, len(infos)):
-                s2 = infos[i2]
+            for i2 in range(i1 + 1, len(disinfos)):
+                s2 = disinfos[i2]
                 if s2 not in res[s1]:
                     res[s1][s2] = 0
                 d1 = int(row[s1])
@@ -163,14 +163,14 @@ def relationshipData():
                     res[s1][s2] += 1
 
     dis = {}
-    for info in infos:
+    for info in disinfos:
         dis[info] = 0
     for index, row in df.iterrows():
-        for info in infos:
+        for info in disinfos:
             if int(row['label']):
                 if int(row[info]):
                     dis[info] += 1
-    return [infos, res, points,dis]
+    return [disinfos, res, points,dis]
 
 
 def getPatientInfo(id):
@@ -202,23 +202,8 @@ def getPatientInfo(id):
         res += f'{k}: {v}\n'
     # print(res)
     return res
-
-
-attr = {
-    '肝功能': [
-        'ALB',
-        'ALP',
-        'ALT',
-        'AST',
-        'DBILI',
-        'GGT',
-        'GLO',
-        'IBILI',
-        'LDH_L',
-        'TBILI',
-        'TP',
-    ],
-    '基本信息': [
+'''
+'基本信息': [
         'AGE',
         'BMI',
         'BP_HIGH',
@@ -265,6 +250,22 @@ attr = {
         'RESPIRATORY_SYSTEM_DISEASE',
         'RHEUMATIC_IMMUNITY',
         'UROLOGIC_NEOPLASMS',
+    ],
+    '''
+
+attr = {
+    '肝功能': [
+        'ALB',
+        'ALP',
+        'ALT',
+        'AST',
+        'DBILI',
+        'GGT',
+        'GLO',
+        'IBILI',
+        'LDH_L',
+        'TBILI',
+        'TP',
     ],
     '凝血相关': [
         'APTT',
@@ -314,6 +315,7 @@ for k, v in attr.items():
 
 def getAbnormalAttr(id):
     data = defaultdict(list)
+    value=[]
     for index, row in df.iterrows():
         if int(row['Case_ID']) == int(id):
             for x in re_attr:
@@ -322,11 +324,13 @@ def getAbnormalAttr(id):
                 else:
                     if int(row[f'{x}1']) == 1:
                         data[re_attr[x]].append(x)
+            for y in disinfos:
+              if int(row[y]):
+                value.append(y)
             break
     data = dict(data)
     # print(data)
-
-    return id, data
+    return id, data,value
 
 
 diseaseInfo = [
