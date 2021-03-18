@@ -980,80 +980,93 @@ function radarLineOption (data) {
 }
 
 function abnormalAttrOption (data) {
-  var colorList = [
-    [
-      '#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
-      '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-      '#1e90ff', '#ff6347', '#7b68ee', '#d0648a', '#ffd700',
-      '#6b8e23', '#4ea397', '#3cb371', '#b8860b', '#7bd9a5'
-    ],
-    [
-      '#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed',
-      '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0',
-      '#1e90ff', '#ff6347', '#7b68ee', '#00fa9a', '#ffd700',
-      '#6b8e23', '#ff00ff', '#3cb371', '#b8860b', '#30e0e0'
-    ],
-    [
-      '#929fff', '#9de0ff', '#ffa897', '#af87fe', '#7dc3fe',
-      '#bb60b2', '#433e7c', '#f47a75', '#009db2', '#024b51',
-      '#0780cf', '#765005', '#e75840', '#26ccd8', '#3685fe',
-      '#9977ef', '#f5616f', '#f7b13f', '#f9e264', '#50c48f'
-    ]][2];
-  let id = data[0];
-  data = data[1];
-  let listdata = [];
-  let linksdata = [];
-  listdata.push({
-    category: 0,
-    name: id,
-    symbolSize: 20,
-    draggable: "true",
-  });
-  //console.log(data);
-  const n = 10;
-  let i = 0;
-  for (var x in data) {
-    listdata.push({
-      category: 1,
-      name: x,
-      symbolSize: (data[x].length) * n,
-      draggable: "true",
-      itemStyle: {
-        color: colorList[(i++) % colorList.length],
-      },
-    });
-    linksdata.push({
-      source: id,
-      target: x,
-      lineStyle: {
-        normal: {
-          color: 'source',
-        }
-      }
-    });
-    for (var y of data[x]) {
-      listdata.push({
-        category: 2,
-        name: y,
-        symbolSize: 1 * n,
-        draggable: "true",
-        itemStyle: {
-          color: colorList[(i++) % colorList.length],
-        },
-      });
-      linksdata.push({
-        source: x,
-        target: y,
-        lineStyle: {
-          normal: {
-            color: 'source',
-          }
-        }
+  function roundDatas (num) {
+    var datas = [];
+    for (var i = 0; i < num; i++) {
+      datas.push({
+        name: 'circle' + i
       });
     }
+    return datas;
   }
-  // console.log(listdata);
-  // console.log(linksdata);
+  let color = ['#ff7f50', '#87cefa', '#da70d6', '#32cd32', '#6495ed', '#ff69b4', '#ba55d3', '#cd5c5c', '#ffa500', '#40e0d0', '#1e90ff', '#ff6347', '#7b68ee', '#d0648a', '#ffd700', '#6b8e23', '#4ea397', '#3cb371', '#b8860b', '#7bd9a5']
+  var nameindex = {
+    'NEPHROPATHY': "1-肾病 ",
+    'CHD': '2-冠心病 ',
+    'LEADDP': '3-下肢动脉病变',
+    'OTHER_TUMOR': '4-其他肿瘤',
+    'RESPIRATORY_SYSTEM_DISEASE': '5-呼吸系统疾病',
+    'RENAL_FALIURE': '6-肾衰',
+    'HYPERLIPIDEMIA': '7-高脂血',
+    'GYNECOLGICAL_TUMOR': '8-妇科肿瘤',
+    'ENDOCRINE_DISEASE': '9-其他内分泌疾病',
+    'HEMATONOSIS': '10-血液病',
+    'CLD': '11-其他慢性肝病',
+    'LUNG_TUMOR': '12-肺部肿瘤',
+    'DIGESTIVE_CARCINOMA': '13-消化系肿瘤',
+    'FLD': '14-脂肪肝',
+    'HYPERTENTION': '15-高血压',
+    'CEREBRAL_APOPLEXTY': '16-脑卒中',
+    'CAROTID_ARTERY_STENOSIS': '17-颈动脉狭窄',
+    'ARRHYTHMIAS': '18-心律失常',
+    'NERVOUS_SYSTEM_DISEASE': '19-神经系统疾病',
+    'MEN': '20-内分泌腺瘤',
+    'BILIARY_TRACT_DISEASE': '21-胆道疾病',
+    'A_S': '22-动脉粥样硬化',
+  }
+  var abnormalAttrData = []
+  for (let item in data[1]) {
+    abnormalAttrData.push({
+      value: data[1][item].length, name: item
+    })
+  }
+
+  let dis = []
+  for (let i of data[2]) {
+    dis.push({ name: nameindex[i] })
+  }
+
+  let details = []
+  for (let i in data[1]) {
+    for (let j of data[1][i]) {
+      details.push({ name: j })
+    }
+  }
+  //统一颜色
+  var colorindex = 0
+  let index1 = 0
+  let index2 = 0
+  for (let item in data[1]) {
+    abnormalAttrData[index1].itemStyle = {
+      color: color[colorindex]
+    }
+    for (let count = 0; count < data[1][item].length; count++) {
+      //因为从0开始，所以要先加
+      index2 += count
+      details[index2].itemStyle = {
+        color: color[colorindex]
+      }
+    }
+    index1++
+    index2++
+    colorindex++
+  }
+
+  let angel = 0
+  angel = details.length / 360
+
+  var centervalue = 0
+  centervalue = details.length / 27
+  centervalue = centervalue.toFixed(2)
+  //console.log(data)
+  /*console.log(abnormalAttrData)
+  console.log(data[1])
+  console.log(data[1]['凝血相关'][0])
+  for(let i in data[1]){
+    console.log(typeof(i),i)
+    console.log(data[1][i].length)
+  }*/
+
   return {
     title: {
       text: "Abnormal index",
@@ -1063,105 +1076,7 @@ function abnormalAttrOption (data) {
         color: '#292421'
       }
     },
-    tooltip: {
-      formatter: function (params, ticket, callback) {
-        if (data.hasOwnProperty(params.name))
-          return params.name + ': ' + data[params.name].length;
-        let i = 0;
-        for (let _ in data)
-          ++i;
-        return 'id ' + params.name + ': ' + i;
-      }
-    },
-    backgroundColor: '#FFFFFF',
-    animationDuration: 0,
-    animationEasingUpdate: 'quinticInOut',
-    series: [{
-      // name: '知识图谱',
-      type: 'graph',
-      layout: 'force',
-      force: {
-        repulsion: 300,
-        gravity: 0.1,
-        edgeLength: 15,
-        layoutAnimation: true,
-      },
-      data: listdata,
-      links: linksdata,
-      categories: [
-        {
-          name: 'id',
-          symbol: 'rect',
-          label: {}
-        }, {
-          name: '特征类型',
-          symbol: 'rect'
-        }, {
-          name: '特征',
-          symbol: 'roundRect'
-        }],
-      roam: true,
-      label: {
-        normal: {
-          show: true,
-          position: 'bottom',
-          formatter: '{b}',
-          fontSize: 10,
-          fontStyle: '600',
-        }
-      },
-      lineStyle: {
-        normal: {
-          opacity: 0.9,
-          width: 1.5,
-          curveness: 0
-        }
-      }
-    }]
-  };
-}
-
-function  abnormalAttrOptiona(data) {
-  function roundDatas(num) {
-    var datas = [];
-    for (var i = 0; i < num; i++) {
-      datas.push({
-        name: 'circle' + i
-      });
-    }
-    return datas;
-  }
-  
-  var abnormalAttrData=[]
-  for(let item in data[1]){
-    abnormalAttrData.push({value:data[1][item].length,name:item})
-  }
-  let dis= []
-  for(let i of data[2]){
-    dis.push({name:i})
-  }
-  let details=[]
-  for(let i in data[1]){
-    for(let j of data[1][i])
-    details.push({name:j})
-  }
-  let angel=0
-  angel=details.length/360
-  //console.log(abnormalAttrData)
-  //console.log(details)
-  //console.log(details)
-  //console.log(data)
-  /*console.log(abnormalAttrData)
-  console.log(data[1])
-  console.log(data[1]['凝血相关'][0])
-  for(let i in data[1]){
-    console.log(typeof(i),i)
-    console.log(data[1][i].length)
-  }*/
-  return  {
     backgroundColor: '#fff',
-    color: ['#5470c6', '#91cc75', '#fac858', '#ee6666', '#73c0de',
-      '#3ba272', '#fc8452', '#9a60b4', '#ea7ccc'],
     tooltip: {
       trigger: 'item'
     },
@@ -1170,42 +1085,51 @@ function  abnormalAttrOptiona(data) {
       {
         name: '异常指标类型',
         type: 'pie',
-        startAngle:angel,
+        startAngle: angel,
         radius: [90, 150],
         center: ['50%', '50%'],
         roseType: 'radius',
         label: {
           show: true,
-          position:'inside',
+          position: 'inside',
         },
         data: abnormalAttrData
       },
-      /*{
+      {
         type: 'liquidFill',
+        name: '异常指标比', // 系列名称，用于tooltip的显示，legend 的图例筛选
+        radius: '25%', // 水球图的半径
+        center: ['50%', '50%'], // 水球图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标
+        // 水填充图的形状 circle 默认圆形  rect 圆角矩形  triangle 三角形  
+        // diamond 菱形  pin 水滴状 arrow 箭头状  还可以是svg的path
+        shape: 'circle',
+        phase: 0, // 波的相位弧度 不设置  默认自动
+        direction: 'right', // 波浪移动的速度  两个参数  left 从右往左 right 从左往右
+        outline: {
+          show: true,
+          borderDistance: 0, // 边框线与图表的距离 数字
+          itemStyle: {
+            borderColor: 'transparent',
+            borderWidth: 1
+          },
+          borderDistance: 0
+        },
+        // 图形样式
+        color: "#FE8704",
         itemStyle: {
-          opacity: 0.8,//波浪的透明度
-          shadowBlur: 10,//波浪的阴影范围
+          opacity: 0.8, // 波浪的透明度
+          shadowBlur: 10,// 波浪的阴影范围
           shadowColor: '#FFB931'//阴影颜色
         },
-        radius: '25%',
-        //水波
-        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-          offset: 0,
-          color: "#FE8704"
-        },
-        {
-          offset: 1,
-          color: '#FFB931'
-        }
-        ])],
-        data: [{
-          value: 0.4,
-        }],
-        // background: '#000',
-        center: ['50%', '50%'],
         backgroundStyle: {
           color: '#fff'
         },
+        // 图形上的文本标签
+        /*label: {
+          fontSize: 25,
+          fontWeight: 20,
+          color: '#fff'
+        },*/
         label: {
           normal: {
             formatter: '',
@@ -1214,26 +1138,20 @@ function  abnormalAttrOptiona(data) {
             }
           }
         },
-        outline: {
-          itemStyle: {
-            borderColor: 'transparent',
-            borderWidth: 1
-          },
-          borderDistance: 0
-        }
-      },*/
+        data: [centervalue] // 系列中的数据内容数组
+      },
       {
         //最外圈
         type: 'graph',
         tooltip: {
-          show:false
+          show: false
         },
         ribbonType: true,
         layout: 'circular',
         hoverAnimation: false,
         z: 0,
-        width: '60%',
-        height: '60%',
+        width: '70%',
+        height: '70%',
         circular: {
           rotateLabel: true
         },
@@ -1248,17 +1166,16 @@ function  abnormalAttrOptiona(data) {
         type: 'graph',
         ribbonType: true,
         layout: 'circular',
-        width: '60%',
-        height: '60%',
+        width: '70%',
+        height: '70%',
         circular: {
           rotateLabel: true
         },
         symbolSize: 30,
         symbol: 'triangle',
         label: {
-          normal: {
-            position: 'center'
-          }
+          show: true,
+          position: 'inside'
         },
         itemStyle: {
           normal: {
@@ -1277,8 +1194,8 @@ function  abnormalAttrOptiona(data) {
         layout: 'circular',
         hoverAnimation: true,
         layoutAnimation: true,
-        width: '50%',
-        height: '50%',
+        width: '60%',
+        height: '60%',
         circular: {
           rotateLabel: true
         },
@@ -1301,16 +1218,16 @@ function  abnormalAttrOptiona(data) {
       {
         type: 'graph',
         //ribbonType: true,
-        startAngle:50,
+        startAngle: 50,
         layout: 'circular',
-        width: '50%',
-        height: '50%',
+        width: '60%',
+        height: '70%',
         symbolSize: 40,
-            label: {
-              show: true,
-              position: 'inside'
-            },
-        
+        label: {
+          show: true,
+          position: 'inside'
+        },
+
         data: details
       }/**/
 

@@ -87,8 +87,6 @@
                   let data = result['data'];
                   console.log(data);
                   abnormal_attr_fig.setOption(abnormalAttrOption(data));
-                  //console.log(abnormalAttrOptiona(data))
-                  myChart.setOption(abnormalAttrOptiona(data));
               },
               error: function (XMLHttpRequest, textStatus) {
                   alert("ajax: " + textStatus);
@@ -153,12 +151,12 @@
   </div>
   <!-- 个人信息文本区 -->
   <div class="card mb-3">
-    <textarea id="text_patient_info" style="height: 280px" required class="form-control">
+    <textarea id="text_patient_info" style="height: 100px" required class="form-control">
           </textarea>
   </div>
 
   <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-5">
       <div class="card mb-0">
         <div class="card-body">
           <!--下拉菜单-->
@@ -181,7 +179,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6">
+    <div class="col-sm-7">
       <div class="card mb-0">
         <div class="card-body">
           <div id="abnormal_attr_fig"></div>
@@ -189,14 +187,8 @@
       </div><!-- end card-->
     </div>
   </div>
-  <!--绘图需要规定大小，否则无法获取dom元素-->
-  <div id='container' style="height: 550px;width: 550px;"></div>
 </body>
 
-<script>
-  var myChart = echarts.init(document.getElementById("container"));
-  
-</script>
 
 <script type="text/javascript">
   window.onload = function () {
@@ -256,7 +248,7 @@
   let abnormal_attr_fig = echarts.init(document.getElementById('abnormal_attr_fig'));
   abnormal_attr_fig.resize({
     width: $('abnormal_attr_fig').width(),
-    height: 400
+    height: 600
   });
 
 
