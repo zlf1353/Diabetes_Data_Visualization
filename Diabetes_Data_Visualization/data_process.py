@@ -101,8 +101,9 @@ def bloodPressureData():
         BMI = int(row['BMI'])
         BP_LOW1 = int(row['BP_LOW1'])
         BP_HIGH1 = int(row['BP_HIGH1'])
+        HEIGHT=int(row['HEIGHT'])
         res.append([Case_ID, label, BP_LOW, BP_HIGH, BP_HIGH -
-                    BP_LOW, WEIGHT, BMI1, AGE, SEX, BMI, BP_LOW1, BP_HIGH1])
+                    BP_LOW, WEIGHT, BMI1, AGE, SEX, BMI, BP_LOW1, BP_HIGH1,HEIGHT])
     # print(res)
     return res
 

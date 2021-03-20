@@ -141,7 +141,9 @@ function bloodPressureOption (data) {
           return 'Case_ID:' + value['0']['data'][0] + '<br />' + '性别:' + sex + '<br />' +
             '年龄:' + value['0']['data'][7] + '<br />' +
             'BMI:' + value['0']['data'][9] + '<br />' +
+            '身高:' + value['0']['data'][12] + '<br />' +
             '血压（收缩压、舒张压）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
+
         }
 
       }
