@@ -88,7 +88,6 @@
     height: 300
   });
   let bar_data = {{ num_diabetes_complication| safe }};
-  console.log(bar_data)
   bar_fig.setOption(barLineOption(bar_data, 5));
   bar_fig.on('legendselectchanged', function (params) {
     male = params.selected['男性患并发症'] || params.selected['男性无并发症'];

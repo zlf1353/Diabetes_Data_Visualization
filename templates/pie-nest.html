@@ -16,7 +16,7 @@
       <span>
         top 2
       </span>
-      <input type="range" value="0">
+      <input type="range" value="22" min="2" max="22" id='selected' oninput="selectedchange()">
       <span>
         top 22
       </span>
@@ -108,159 +108,78 @@
     });
     var option;
     var op = 0
-
-    option = {
-      backgroundColor: '#fff',
-      title: {
-        text: '',
-        x: 'center'
+    var legenddata = [ //节点数据
+      {
+        name: '1-肾病',
+        icon: 'circle'
       },
-      //—— 悬浮框 ——
-      tooltip: {
-        trigger: 'item',//'共病人数：{c}人'
-        formatter: (a, b) => {
-          if (a['data']['category']) {
-            op = 1
-            return '患病人数：' + a[`data`][`value`] + '人'
-          } else {
-            op = 0
-            return '共病人数：' + a[`data`][`value`] + '人'
-          }
-        },
-      },
-      legend: [{
-        orient: 'vertical',
-        x: '30px',
-        y: '30px',
-        itemWidth: 14,
-        itemHeight: 14,
-        data: [ //节点数据
-          {
-            name: '1-肾病',
-            icon: 'circle'
-          },
-          {
-            name: '2-冠心病',
-            icon: 'circle'
-          }, {
-            name: '3-下肢动脉病变',
-            icon: 'circle'
-          }, {
-            name: '4-其他肿瘤',
-            icon: 'circle',
+      {
+        name: '2-冠心病',
+        icon: 'circle'
+      }, {
+        name: '3-下肢动脉病变',
+        icon: 'circle'
+      }, {
+        name: '4-其他肿瘤',
+        icon: 'circle',
 
-          }, {
-            name: '5-呼吸系统疾病',
-            icon: 'circle'
-          }, {
-            name: '6-肾衰',
-            icon: 'circle'
-          }, {
-            name: '7-高脂血',
-            icon: 'circle'
-          }, {
-            name: '8-妇科肿瘤',
-            icon: 'circle'
-          }, {
-            name: '9-其他内分泌疾病',
-            icon: 'circle'
-          }, {
-            name: '10-血液病',
-            icon: 'circle'
-          }, {
-            name: '11-其他慢性肝病',
-            icon: 'circle'
-          }, {
-            name: '12-肺部肿瘤',
-            icon: 'circle'
-          }, {
-            name: '13-消化系肿瘤',
-            icon: 'circle'
-          }, {
-            name: '14-脂肪肝',
-            icon: 'circle'
-          }, {
-            name: '15-高血压',
-            icon: 'circle'
-          }, {
-            name: '16-脑卒中',
-            icon: 'circle'
-          }, {
-            name: '17-颈动脉狭窄',
-            icon: 'circle'
-          }, {
-            name: '18-心律失常',
-            icon: 'circle'
-          }, {
-            name: '19-神经系统疾病',
-            icon: 'circle'
-          }, {
-            name: '20-内分泌腺瘤',
-            icon: 'circle'
-          }, {
-            name: '21-胆道疾病',
-            icon: 'circle'
-          }, {
-            name: '22-动脉粥样硬化',
-            icon: 'circle'
-          },
-        ],
-      },],
-      toolbox: {
-        show: true, //是否显示工具箱
-        feature: {
-          saveAsImage: true // 保存为图片，
-        }
+      }, {
+        name: '5-呼吸系统疾病',
+        icon: 'circle'
+      }, {
+        name: '6-肾衰',
+        icon: 'circle'
+      }, {
+        name: '7-高脂血',
+        icon: 'circle'
+      }, {
+        name: '8-妇科肿瘤',
+        icon: 'circle'
+      }, {
+        name: '9-其他内分泌疾病',
+        icon: 'circle'
+      }, {
+        name: '10-血液病',
+        icon: 'circle'
+      }, {
+        name: '11-其他慢性肝病',
+        icon: 'circle'
+      }, {
+        name: '12-肺部肿瘤',
+        icon: 'circle'
+      }, {
+        name: '13-消化系肿瘤',
+        icon: 'circle'
+      }, {
+        name: '14-脂肪肝',
+        icon: 'circle'
+      }, {
+        name: '15-高血压',
+        icon: 'circle'
+      }, {
+        name: '16-脑卒中',
+        icon: 'circle'
+      }, {
+        name: '17-颈动脉狭窄',
+        icon: 'circle'
+      }, {
+        name: '18-心律失常',
+        icon: 'circle'
+      }, {
+        name: '19-神经系统疾病',
+        icon: 'circle'
+      }, {
+        name: '20-内分泌腺瘤',
+        icon: 'circle'
+      }, {
+        name: '21-胆道疾病',
+        icon: 'circle'
+      }, {
+        name: '22-动脉粥样硬化',
+        icon: 'circle'
       },
-      //—— 其他设置 ——
-      animationDurationUpdate: 1500,
-      animationEasingUpdate: 'quinticInOut',
-      series: [{
-        type: 'graph',
-        layout: 'circular', // 'circular' ,force  不同的布局方式
-        symbolSize: 30, //图形的大小（示例中的圆的大小）
-        roam: true, //鼠标缩放及平移
-        focusNodeAdjacency: true, //是否在鼠标移到节点上的时候突出显示节点、节点的边和邻接节点
-        label: {
-          normal: {
-            show: true, //控制非高亮时节点名称是否显示
-            position: '',
-            fontSize: 18,
-            color: 'black'
-          },
-          emphasis: {
-            show: true, //控制非高亮时节点名称是否显示
-            position: 'right',
-            fontSize: 16,
-            color: 'black'
-          },
-        },
-        force: {
-          x: 'center',
-          y: 'center',
-          repulsion: 20,
-          edgeLength: [10, 3000],
-          friction: 0.6
-          //repulsion: 8000
-        },
-        //     edgeSymbol: ['circle', 'arrow'],//箭头
-        //    edgeSymbolSize: [6, 10],
-        edgeLabel: {
-          normal: {
-            show: false,
-            textStyle: {
-              fontSize: 12
-            },
-          },
-          emphasis: {
-            show: true,
-            textStyle: {
-              fontSize: 14 //边节点显示的字体大小
-            }
-          },
-        },
-
-        data: [ //节点数据
+    ]
+    var itemdata= [ //节点数据
           {
             name: '1-肾病',
             label: '',
@@ -559,9 +478,8 @@
               },
             },
           },
-        ],
-
-        links: [    //连线数据
+        ]
+    var linksdata=[    //连线数据
           {
             source: '1-肾病',
             target: '2-冠心病',
@@ -3675,9 +3593,8 @@
             }
 
           }
-        ],
-
-        categories: [ //节点数据
+        ]
+    var categoriesdata=[ //节点数据
           {
             name: '1-肾病',
             icon: 'circle'
@@ -3749,12 +3666,106 @@
           },
 
         ],
+     
+    option = {
+      backgroundColor: '#fff',
+      title: {
+        text: '',
+        x: 'center'
+      },
+      //—— 悬浮框 ——
+      tooltip: {
+        trigger: 'item',//'共病人数：{c}人'
+        formatter: (a, b) => {
+          if (a['data']['category']) {
+            op = 1
+            return '患病人数：' + a[`data`][`value`] + '人'
+          } else {
+            op = 0
+            return '共病人数：' + a[`data`][`value`] + '人'
+          }
+        },
+      },
+      legend: [
+        {
+          orient: 'vertical',
+          x: '30px',
+          y: '30px',
+          itemWidth: 14,
+          itemHeight: 14,
+          data: legenddata
+        },
+      ],
+      toolbox: {
+        show: true, //是否显示工具箱
+        feature: {
+          saveAsImage: true // 保存为图片，
+        }
+      },
+      //—— 其他设置 ——
+      animationDurationUpdate: 1500,
+      animationEasingUpdate: 'quinticInOut',
+      series: [
+        {
+        type: 'graph',
+        layout: 'circular', // 'circular' ,force  不同的布局方式
+        symbolSize: 30, //图形的大小（示例中的圆的大小）
+        roam: true, //鼠标缩放及平移
+        focusNodeAdjacency: true, //是否在鼠标移到节点上的时候突出显示节点、节点的边和邻接节点
+        label: {
+          normal: {
+            show: true, //控制非高亮时节点名称是否显示
+            position: '',
+            fontSize: 18,
+            color: 'black'
+          },
+          emphasis: {
+            show: true, //控制非高亮时节点名称是否显示
+            position: 'right',
+            fontSize: 16,
+            color: 'black'
+          },
+        },
+        force: {
+          x: 'center',
+          y: 'center',
+          repulsion: 20,
+          edgeLength: [10, 3000],
+          friction: 0.6
+          //repulsion: 8000
+        },
+        //     edgeSymbol: ['circle', 'arrow'],//箭头
+        //    edgeSymbolSize: [6, 10],
+        edgeLabel: {
+          normal: {
+            show: false,
+            textStyle: {
+              fontSize: 12
+            },
+          },
+          emphasis: {
+            show: true,
+            textStyle: {
+              fontSize: 14 //边节点显示的字体大小
+            }
+          },
+        },
 
-
-
+        data: itemdata,
+        links: linksdata,
+        categories: categoriesdata
       }]
     }; // 使用刚指定的配置项和数据显示图表。
 
+
+    function selectedchange() {
+      var value = document.getElementById("selected").value;
+      option['legend'][0]['data'] = legenddata.slice(0, value)
+      option['series'][0]['data'] = itemdata.slice(0, value)
+      //option['series'][0]['data'] = itemdata.slice(0, value)
+      option['series'][0]['categories'] = categoriesdata.slice(0, value)
+      myChart.setOption(option, true);
+    }
     if (option && typeof option === 'object') {
       myChart.setOption(option);
     }
