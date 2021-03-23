@@ -41,10 +41,10 @@ def barData(left=0, right=len(fs) - 1):
     女性0 男性1
     无并发症0 患并发症1
     Case_ID	 label AGE	SEX
-    0       1           2           3           4           5       6       7
-    年龄段 n女性无并发症 n女性患并发症 n男性无并发症 n男性患并发症 患病比例 女性患病比例 男性患病比例
+    0       1           2           3           4           5       6       7                 8
+    年龄段 n女性无并发症 n女性患并发症 n男性无并发症 n男性患并发症 患病比例 女性患病比例 男性患病比例 患并发症占当前年龄段人口比例
     '''
-    res = [[xAxis[i], 0, 0, 0, 0, 0, 0, 0] for i in range(len(fs))]
+    res = [[xAxis[i], 0, 0, 0, 0, 0, 0, 0,0] for i in range(len(fs))]
     for x in data:
         for i in range(left, right + 1):
             if fs[i](x[2]):
@@ -59,9 +59,11 @@ def barData(left=0, right=len(fs) - 1):
         sum_male += x[7]
     for x in res:
         x[5] = x[5] * 100 / sum_total
+        x[5]=round(x[5], 2)
         x[6] = x[6] * 100 / sum_female
         x[7] = x[7] * 100 / sum_male
-    # print(res)
+        x[8]=((x[2]+x[4])* 100)/(x[1]+x[2]+x[3]+x[4])
+        x[8]=round(x[8], 2)
     return res
 
 

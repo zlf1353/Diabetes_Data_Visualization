@@ -19,7 +19,15 @@ function barLineOption (data, percent_y) {
       type: "category"
     },
     tooltip: {
-      show: true
+      show: true,
+      formatter: (value) => {
+        console.log(value)
+        return  value['data'][0] +'岁'+'<br />'+
+        '糖尿病患者比例:' + value['data'][5]+ '<br />'+
+        '并发症患者比例:' + value['data'][8]+ '<br />'+
+        '患并发症:' + (value['data'][2]+value['data'][4])+ '<br />'+
+        '无并发症:' + (value['data'][1]+value['data'][3])+ '<br />'
+      }
     },
     yAxis: [
       {
@@ -31,6 +39,14 @@ function barLineOption (data, percent_y) {
             color: ["#555"],
           }
         },
+        axisLabel: {
+          show: true,
+          margin: 5,
+          textStyle: {
+            color: "#111",
+          },
+          formatter: '{value} %'
+        },
       },
       {
         name: "数量",
@@ -41,45 +57,49 @@ function barLineOption (data, percent_y) {
             color: ["#555"],
           }
         },
-
+        axisLabel: {
+          show: true,
+          margin: 5,
+          textStyle: {
+            color: "#111",
+          },
+          formatter: '{value} 人'
+        },
       }],
     dataZoom: [
       {
         type: 'slider',
         show: true,
         xAxisIndex: [0],
-        // start: 1,
-        // end: 35
       },
-      // {
-      //     type: 'slider',
-      //     show: true,
-      //     yAxisIndex: [0,1],
-      //     // left: '93%',
-      //     // start: 29,
-      //     // end: 36
-      // },
       {
         type: 'inside',
         xAxisIndex: [0],
-        // start: 1,
-        // end: 35
       },
-      // {
-      //     type: 'inside',
-      //     yAxisIndex: [0,1],
-      //     // start: 29,
-      //     // end: 36
-      // }
     ],
     series: [
       {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "患并发症",
+        name: "女性无并发症",
         itemStyle: {
           color: "rgb(168,143,11)"
+        },
+        yAxisIndex: 1,
+        encode: {
+          x: 0,
+          y: 1
+        }
+      },
+      {
+        type: "bar",
+        barWidth: "60%",
+        stack: true,
+        name: "女性患并发症",
+        itemStyle: {
+          //使用透明度时，高亮会消失
+          color: "rgb(168,143,5)"
         },
         yAxisIndex: 1,
         encode: {
@@ -91,24 +111,46 @@ function barLineOption (data, percent_y) {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "无并发症",
+        name: "男性无并发症",
         itemStyle: {
           color: "rgb(17,116,101)"
         },
         yAxisIndex: 1,
         encode: {
           x: 0,
-          y: 1
+          y: 3
+        }
+      },
+      {
+        type: "bar",
+        barWidth: "60%",
+        stack: true,
+        name: "男性患并发症",
+        itemStyle: {
+          color: "rgb(17,116,95)"
+        },
+        yAxisIndex: 1,
+        encode: {
+          x: 0,
+          y: 4
         }
       },
       {
         type: "line",
-        smooth: true,
-        name: "患病比例",
+        name: "糖尿病患病比例",
         yAxisIndex: 0,
         encode: {
           x: 0,
-          y: percent_y
+          y: 5
+        }
+      },
+      {
+        type: "line",
+        name: "并发症患病比例",
+        yAxisIndex: 0,
+        encode: {
+          x: 0,
+          y: 8
         }
       },
     ]
