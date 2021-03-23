@@ -25,17 +25,13 @@
               <div style="margin-top: 50px;">
                 <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked> 按BMI升序
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>按ID升序
                   </label>
-                </div>
-                <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">按年龄升序
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="7">按年龄升序
                   </label>
-                </div>
-                <div class="radio">
                   <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">按ID升序
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="9">按BMI升序
                   </label>
                 </div>
               </div>
@@ -180,7 +176,8 @@
     isXLabel = false;
   });
 
-  let bloodPressureData = {{ bloodPressureData| safe }};
+  var bloodPressureData = {{ bloodPressureData| safe }};
+  console.log(bloodPressureData)
   let bloodPressureOption_option = bloodPressureOption(bloodPressureData)
   blood_pressure_fig.setOption(bloodPressureOption_option);
   //疾病关系图
@@ -207,5 +204,25 @@
     height: 250
   });
   parallel_fig.setOption(parallelOption());*/
+  $('input[type=radio][name=optionsRadios]').change(function () {
+    if(this.value=='0'){
+      bloodPressureData.sort(function(a,b){
+        return a[0]-b[0]
+      })
+    }else 
+    if(this.value=='7'){
+      bloodPressureData.sort(function(a,b){
+        return a[7]-b[7]
+      })
+    }
+    else 
+    if(this.value=='9'){
+      bloodPressureData.sort(function(a,b){
+        return a[9]-b[9]
+      })
+    }
+    blood_pressure_fig.setOption(bloodPressureOption(bloodPressureData),true)
+  });
+
 </script>
 {% endblock %}
