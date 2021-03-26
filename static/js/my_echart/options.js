@@ -21,12 +21,11 @@ function barLineOption (data, percent_y) {
     tooltip: {
       show: true,
       formatter: (value) => {
-        console.log(value)
-        return  value['data'][0] +'岁'+'<br />'+
-        '糖尿病患者比例:' + value['data'][5]+ '<br />'+
-        '并发症患者比例:' + value['data'][8]+ '<br />'+
-        '患并发症:' + (value['data'][2]+value['data'][4])+ '<br />'+
-        '无并发症:' + (value['data'][1]+value['data'][3])+ '<br />'
+        return value['data'][0] + '岁' + '<br />' +
+          '糖尿病患者比例:' + value['data'][5] + '<br />' +
+          '并发症患者比例:' + value['data'][8] + '<br />' +
+          '患并发症:' + (value['data'][2] + value['data'][4]) + '<br />' +
+          '无并发症:' + (value['data'][1] + value['data'][3]) + '<br />'
       }
     },
     yAxis: [
@@ -292,7 +291,7 @@ function bloodPressureOption (data) {
         xAxisIndex: 0,
         start: 0,
         end: 5,
-        bottom: '-1px'
+        //bottom: '-1px'
       },
       {
         type: 'inside',
