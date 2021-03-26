@@ -1023,6 +1023,7 @@ function radarLineOption (data) {
 }
 
 function abnormalAttrOption (data) {
+  console.log('data',data)
   function roundDatas (num) {
     var datas = [];
     for (var i = 0; i < num; i++) {
@@ -1070,12 +1071,17 @@ function abnormalAttrOption (data) {
   }
 
   let details = []
+
   for (let i in data[1]) {
     for (let j of data[1][i]) {
       details.push({ name: j })
     }
   }
+  //i；计数
+  let i=0
+
   //统一颜色
+  
   var colorindex = 0
   let index1 = 0
   let index2 = 0
@@ -1089,12 +1095,13 @@ function abnormalAttrOption (data) {
       details[index2].itemStyle = {
         color: color[colorindex]
       }
+      details[index2].value = data[3][i]
     }
     index1++
     index2++
     colorindex++
+    i++
   }
-
   let angel = 0
   angel = details.length / 360
 

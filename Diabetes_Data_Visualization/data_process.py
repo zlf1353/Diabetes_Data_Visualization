@@ -319,6 +319,7 @@ for k, v in attr.items():
 def getAbnormalAttr(id):
     data = defaultdict(list)
     value=[]
+    detailvalue=[]
     for index, row in df.iterrows():
         if int(row['Case_ID']) == int(id):
             for x in re_attr:
@@ -327,13 +328,13 @@ def getAbnormalAttr(id):
                 else:
                     if int(row[f'{x}1']) == 1:
                         data[re_attr[x]].append(x)
+                        detailvalue.append(float(row[f'{x}']))
             for y in disinfos:
               if int(row[y]):
                 value.append(y)
             break
     data = dict(data)
-    # print(data)
-    return id, data,value
+    return id, data,value,detailvalue
 
 
 diseaseInfo = [
