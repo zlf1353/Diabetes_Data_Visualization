@@ -253,7 +253,7 @@ a {
   z-index: 999; }
 
 .headerbar .headerbar-left {
-    background: #4980b5;
+    background: #2C50EE;
     float: left;
     text-align: center;
     height: 50px;
@@ -269,7 +269,7 @@ a {
 }
 	  
 .navbar-custom {
-  background-color: #4980b5 ;
+  background-color: #2C50EE ;/* #4980b5  */
   border-radius: 0;
   margin-bottom: 0;
   padding: 0 10px;
@@ -320,7 +320,8 @@ a {
 
 .main-sidebar.left {
   position: absolute; 
-  /*融合需要*/
+  /*融合需要background-color: #BBBCBE;*/
+  
   height: 1570px;}
 
 body.adminbody .main-sidebar.left {

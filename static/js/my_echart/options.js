@@ -83,7 +83,7 @@ function barLineOption (data, percent_y) {
         stack: true,
         name: "女性无并发症",
         itemStyle: {
-          color: "rgb(168,143,11)"
+          color: '#94A7F6'//"rgb(168,143,11)"
         },
         yAxisIndex: 1,
         encode: {
@@ -98,7 +98,7 @@ function barLineOption (data, percent_y) {
         name: "女性患并发症",
         itemStyle: {
           //使用透明度时，高亮会消失
-          color: "rgb(168,143,5)"
+          color: '#F9C6AF'// "rgb(168,143,5)"
         },
         yAxisIndex: 1,
         encode: {
@@ -112,7 +112,7 @@ function barLineOption (data, percent_y) {
         stack: true,
         name: "男性无并发症",
         itemStyle: {
-          color: "rgb(17,116,101)"
+          color: '#516FF1'//"rgb(17,116,101)"
         },
         yAxisIndex: 1,
         encode: {
@@ -126,7 +126,7 @@ function barLineOption (data, percent_y) {
         stack: true,
         name: "男性患并发症",
         itemStyle: {
-          color: "rgb(17,116,95)"
+          color: '#F7AC8B'//"rgb(17,116,95)"
         },
         yAxisIndex: 1,
         encode: {
@@ -140,7 +140,10 @@ function barLineOption (data, percent_y) {
         yAxisIndex: 0,
         encode: {
           x: 0,
-          y: 5
+          y: 5,
+        },
+        itemStyle: {
+          color: "#B1CB82"
         }
       },
       {
@@ -150,6 +153,9 @@ function barLineOption (data, percent_y) {
         encode: {
           x: 0,
           y: 8
+        },
+        itemStyle: {
+          color: "#FD964F"
         }
       },
     ]
@@ -330,7 +336,7 @@ function bloodPressureOption (data) {
         itemStyle: {
           color: (value) => {
             //console.log(value)
-            if (value['data'][10]) return "#FF6161"
+            if (value['data'][10]) return "#F2B758"
             else return "#91cc75"
           },
           borderColor: "#fff",
@@ -754,8 +760,6 @@ function diseaseRelationshipOption (data) {
 }
 
 function radarOption (data) {
-  // var features_str = ['diseaseInfo', 'liverFunction', 'others'];
-  // var data = [80, 70, 30, 85, 25];
   var indicatorname = ['diseaseInfo', 'PhysicalIndex', 'PatientsInfo'];
   var maxdata = [100, 100, 100, 100, 100];
 
@@ -920,22 +924,10 @@ function radarOption (data) {
 }
 
 function radarLineOption (data) {
-  // 本月已经完成/目标
   data = parseFloat(parseInt(data * 100)) / 100;
   var chartData = [data];
-  // var chartName = ['2015', '2016', '2017'];
-  // var unit='亿元';
   var myColor = ['#FFA483', '#F97F53', '#F45922'];
   return {
-    //  title: {
-    //     text: '单位:  '+unit,
-    //     right:0,
-    //     textStyle: {
-    //         color: '#000',
-    //         fontSize:14,
-    //     }
-    // },
-
     backgroundColor: '#fff',
     grid: {
       left: '2%',
@@ -968,10 +960,10 @@ function radarLineOption (data) {
         z: 2,
         itemStyle: {
           normal: {
-            color: function (params) {
+            color: '#BCD7F7'/*function (params) {
               var num = myColor.length;
               return myColor[params.dataIndex % num]
-            }
+            }*/
           }
         },
         label: {
@@ -1003,19 +995,6 @@ function radarLineOption (data) {
             color: 'transparent'
           }
         },
-        // label: {
-        //     normal: {
-        //         show: true,
-        //         position: [0, '-20'],
-        //         textStyle: {
-        //             fontSize: 14,
-        //             color: '#333',
-        //         },
-        //         // formatter: function (data) {
-        //         //     return chartName[data.dataIndex];
-        //         // }
-        //     }
-        // },
         data: chartData
       }
     ]
@@ -1023,7 +1002,7 @@ function radarLineOption (data) {
 }
 
 function abnormalAttrOption (data) {
-  console.log('data',data)
+  console.log('data', data)
   function roundDatas (num) {
     var datas = [];
     for (var i = 0; i < num; i++) {
@@ -1078,10 +1057,10 @@ function abnormalAttrOption (data) {
     }
   }
   //i；计数
-  let i=0
+  let i = 0
 
   //统一颜色
-  
+
   var colorindex = 0
   let index1 = 0
   let index2 = 0
@@ -1337,8 +1316,17 @@ function pieRingOption (data, id) {
           show: false
         },
         data: [
-          { value: data[3][index[id]], name: '有并发症' },
-          { value: data[2][index[id]] - data[3][index[id]], name: '无并发症' }
+          {
+            value: data[3][index[id]], name: '有并发症', itemStyle: {
+              color: '#FB9461'//"rgba(45, 6, 6, 1)"
+            }
+          },
+          {
+            value: data[2][index[id]] - data[3][index[id]], name: '无并发症',
+            itemStyle: {
+              color: '#516FF1'//"rgba(45, 6, 6, 1)"
+            }
+          }
         ]
       },
       {
@@ -1349,8 +1337,12 @@ function pieRingOption (data, id) {
           formatter: '{d}%'
         },
         data: [
-          { value: data[2][index[id]], name: '患病比例' },
-          { value: 300 - data[2][index[id]], name: '无病比例' },
+          {
+            value: data[2][index[id]], name: '患病比例',
+          },
+          {
+            value: 300 - data[2][index[id]], name: '无病比例',
+          },
         ]
       }
     ]
