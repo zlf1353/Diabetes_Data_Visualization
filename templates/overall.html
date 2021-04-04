@@ -9,75 +9,79 @@
     });
   });
 </script>
-<div class="row">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <div class="card mb-3">
-      <div class="card-body">
-        <div style="float: left;width: 100%;">
-          <div id="bar_fig"></div>
-          <!--血压哑铃图-->
-          <div class="row">
-            <div class="col-sm-10">
-              <div id="blood_pressure_fig"></div>
-            </div>
-            <!--选择框-->
-            <div class="col-sm-2">
-              <div style="margin-top: 50px;">
-                <div class="radio">
-                  <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>按ID升序
-                  </label>
-                  <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="7">按年龄升序
-                  </label>
-                  <label>
-                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="9">按BMI升序
-                  </label>
-                </div>
-              </div>
-            </div>
-            <!--end血压哑铃图-->
-          </div>
 
-          <!-- 选项卡区-->
-
-        </div>
-        <!--
-          <div style="float: left">
-          <div id="scatter_fig"></div>
-        </div>
-        -->
-        <!--关系图-->
-        <div style="float: left">
-          <div id="disease_relationship_fig"></div>
-        </div>
-
-
-      </div>
-      <!--
-        <div class="card-body">
-        <div>
-          <div style="float: left">
-            <div id="biochemical_indexes_fig"></div>
-          </div>
-          <div style="float: left">
-            <div id="parallel_fig"></div>
-          </div>
-        </div>
-      </div>
-      -->
-
+<body>
+  <div class="row" style="margin-bottom: 15px;">
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+      <div class="mycard"></div>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+      <div class="mycard"></div>
+    </div>
+    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
+      <div class="mycard"></div>
     </div>
   </div>
-  {% block ralationbody %}
-  {% endblock ralationbody %}
-</div>
+  <div class="row" style="margin-bottom: 15px;">
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div style="float: left;width: 100%;">
+            <div id="bar_fig"></div>
+            <!--血压哑铃图-->
+            <div class="row">
+              <div class="col-sm-10">
+                <div id="blood_pressure_fig"></div>
+              </div>
+              <!--选择框-->
+              <div class="col-sm-2">
+                <div style="margin-top: 50px;">
+                  <div class="radio">
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>按ID升序
+                    </label>
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="7">按年龄升序
+                    </label>
+                    <label>
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="9">按BMI升序
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <!--end血压哑铃图-->
+            </div>
+            <!-- 选项卡区-->
+          </div>
+          <!--关系图-->
+          <div style="float: left">
+            <div id="disease_relationship_fig"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+      <div class="card mb-3">
+        <div class="card-body">
+          {% block ralationbody %}
+          {% endblock ralationbody %}
+        </div>
+      </div>
+    </div>
+
+</body>
+<style>
+  .mycard {
+    height: 200px;
+    border: 5px solid red;
+  }
+</style>
 <script src="{% static 'js/my_echart/options.js' %}"></script>
 <script type="text/javascript">
   //并发症柱状图
   let bar_fig = echarts.init(document.getElementById('bar_fig'));
   bar_fig.resize({
-    width: 800,
+    width: 400,
     height: 300
   });
   let bar_data = {{ num_diabetes_complication| safe }};
@@ -132,7 +136,7 @@
   //血压哑铃图
   let blood_pressure_fig = echarts.init(document.getElementById('blood_pressure_fig'));
   blood_pressure_fig.resize({
-    width: 800,
+    width: 400,
     height: 410
   });
 

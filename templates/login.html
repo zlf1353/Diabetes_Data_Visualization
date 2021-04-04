@@ -121,14 +121,14 @@
             <label for="firstname" class="col-sm-3 control-label"><span
                 style="color: black;font-size: 15px;">邮箱</span></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="firstname" placeholder="请输入邮箱">
+              <input type="text" class="form-control" id="name" placeholder="请输入邮箱">
             </div>
           </div>
           <div class="form-group">
             <label for="lastname" class="col-sm-3 control-label"><span
                 style="color: black;font-size: 15px;">密码</span></label>
             <div class="col-sm-8">
-              <input type="text" class="form-control" id="lastname" placeholder="请输入密码">
+              <input type="text" class="form-control" id="password" placeholder="请输入密码">
             </div>
           </div>
           <div class="form-group">
@@ -146,7 +146,14 @@
     </div>
     <script>
       function myFunction() {
-        window.location.href = `overall`
+        var name=document.getElementById('name').value
+        var password=document.getElementById('password').value
+        if (name=='admin'&&password=='123456')
+        {
+          window.location.href = `overall`
+        }else{
+          alert('密码或姓名错误')
+        }
       }
     </script>
 </body>

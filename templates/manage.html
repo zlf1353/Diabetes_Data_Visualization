@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block mainbody %}
 
+{% block mainbody %}
+<script>
+  const isNullOrUndefined = obj => obj === null || obj === undefined;
+  $(document).ready(function () {
+    $.ajaxSetup({
+      data: { csrfmiddlewaretoken: '{{ csrf_token }}' },
+    });
+  });
+</script>
 <body>
 
   <head>
@@ -18,9 +26,8 @@
           <div class="input-group">
             <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
             <span class="input-group-btn">
-              <button type="button" id="btn_search" class="btn btn-default">
+              <button class="btn btn-default" onclick="view()" >
                 <span class="glyphicon glyphicon-search">
-
                 </span>
               </button>
             </span><!-- end input-group-->
@@ -39,17 +46,56 @@
           <td width="100">最近血糖</td>
         </tr>
         <tr>
-          <td>0121</td>
-          <td>李振</td>
-          <td>65</td>
-          <td>男</td>
+          <td id='id'>0121</td>
+          <td id='name'>李振</td>
+          <td id='age'>65</td>
+          <td id='sex'>男</td>
           <td>2020/9/23</td>
           <td>控制差</td>
-          <td><button></button></td>
-          <td><button></button></td>
+          <td><button class="btn btn-default" >查看详情</button></td>
+          <td><img src="../static/images/聊天.png" style="height: 20px;width: 20px;"></td>
         </tr>
       </table>
     </div>
   </div>
 </body>
+<script>
+  function view() {
+    //要放在里面，实时监控
+    var radar_info_id=document.getElementById("input_patient_id").value;
+    $.ajax({
+              type: "POST",
+              data: {id: radar_info_id},
+              url: "{% url 'get_patient_info' %}",
+              cache: false,
+              success: function (result) {
+                let data = result['data'];
+                  var newdata = data.split('\n')
+                  for (let i = 0; i < newdata.length; i++) {
+                    newdata[i] = newdata[i].split(': ')
+                  }
+                  while (newdata[0][1].length < 4) {
+                    newdata[0][1] = '0'+newdata[0][1].slice(0)
+                  }
+                  
+                  document.getElementById("id").innerHTML = newdata[0][1]
+                  newdata[1][1] = newdata[1][1] || '——'
+                  document.getElementById("name").innerHTML = newdata[1][1]
+
+                  newdata[2][0] = '年龄'
+                  newdata[3][0] = '性别'
+                  if (newdata[3][1] == '0') {
+                    newdata[3][1] = '男'
+                  } else {
+                    newdata[3][1] = '女'
+                  }
+                  newdata[3][0] = '性别'
+                  document.getElementById("age").innerHTML = newdata[2][1]
+                  document.getElementById("sex").innerHTML = newdata[3][1]
+              },
+              error: function (XMLHttpRequest, textStatus) {
+              }
+          });
+        }
+</script>
 {% endblock %}
