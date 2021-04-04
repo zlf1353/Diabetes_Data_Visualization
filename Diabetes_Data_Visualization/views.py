@@ -26,6 +26,13 @@ def pienest(request):
     ctx['diseaseRelationshipData'] = data_process.relationshipData()
     return render(request, 'pie-nest.html', ctx)
 
+def manage(request):
+    ctx = {}
+    return render(request, 'manage.html', ctx)
+
+def login(request):
+    ctx = {}
+    return render(request, 'login.html', ctx)
 
 def scatterData(request):
     if request.POST:

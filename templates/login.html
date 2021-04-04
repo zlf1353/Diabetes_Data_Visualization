@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>糖尿病患者自我管理系统</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="viewport"
+    content="width=device-width,height-device-height,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<style>
+  /*设置html,body高度与浏览器高度一致*/
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+
+    /*超出body范围部分隐藏*/
+    overflow: hidden;
+  }
+
+  .detail-header {
+    background-color: #4980b5;
+    height: 10%;
+  }
+
+  .detail-content {
+    height: 80%;
+    width: 100%;
+  }
+
+  .title {
+    color: #e3ebf3 !important;
+    font-size: 20px;
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 48px;
+    margin-left: 30px;
+  }
+
+  .msg {
+    height: 100%;
+  }
+
+  .detail-footer {
+    background-color: #4980b5;
+    height: 10%;
+  }
+
+  .mainbox {
+    height: 100%;
+    width: 100%;
+    background-image: url(\../static/images/1-4.png);
+  }
+
+  .box {
+    height: 300px;
+    width: 400px;
+    background-color: rgb(192, 192, 192, 0.5);
+    top: 50%;
+    left: 50%;
+    margin-top: -150px;
+    margin-left: -200px;
+    position: absolute;
+
+  }
+
+  /*视图底部线条*/
+  .bottom-line-gray {
+    color: #d3d3d3;
+  }
+
+  /*三种居中方式*/
+  .center {
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+  }
+
+  .vertical-center {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-pack: center;
+
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-pack: center;
+  }
+
+  .horizontal-center {
+    display: -webkit-box;
+    -webkit-box-orient: horizontal;
+    -webkit-box-pack: center;
+
+    display: -moz-box;
+    -moz-box-orient: horizontal;
+    -moz-box-pack: center;
+  }
+</style>
+
+<body>
+  <div class="detail-header bottom-line-gray vertical-center">
+    <span class="title">糖尿病患者管理系统</span>
+  </div>
+
+  <div class="detail-content bottom-line-gray">
+    <div class='mainbox'>
+      <div class="box">
+        <form class="form-horizontal" role="form" style="margin-top: 60px;opacity: 1;">
+          <div class="form-group">
+            <label for="firstname" class="col-sm-3 control-label"><span
+                style="color: black;font-size: 15px;">邮箱</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="firstname" placeholder="请输入邮箱">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="lastname" class="col-sm-3 control-label"><span
+                style="color: black;font-size: 15px;">密码</span></label>
+            <div class="col-sm-8">
+              <input type="text" class="form-control" id="lastname" placeholder="请输入密码">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-5 col-sm-10">
+              
+              <a>忘记密码</a>
+            </div>
+          </div>
+        </form>
+        <button class="btn btn-default" onclick="myFunction()" style="left: 45%;position: absolute;">登录</button>
+      </div>
+    </div>
+    
+    <div class="detail-footer center">
+    </div>
+    <script>
+      function myFunction() {
+        window.location.href = `overall`
+      }
+    </script>
+</body>
+
+</html>

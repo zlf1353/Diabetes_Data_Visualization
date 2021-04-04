@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block mainbody %}
+
+<body>
+
+  <head>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://echarts.baidu.com/resource/echarts-liquidfill-latest/dist/echarts-liquidfill.min.js"></script>
+  </head>
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-sm-6">
+          <!-- 输入框搜索 -->
+          <div class="input-group">
+            <input type="text" class="form-control" id="input_patient_id" placeholder="Please search for patient ID" />
+            <span class="input-group-btn">
+              <button type="button" id="btn_search" class="btn btn-default">
+                <span class="glyphicon glyphicon-search">
+
+                </span>
+              </button>
+            </span><!-- end input-group-->
+          </div>
+        </div>
+        <div class="col-sm-6"></div>
+
+      </div>
+      <table width="800" border="0" cellspacing="0" cellpadding="0" style="margin-top: 12px;">
+        <tr style="font-weight: bolder;">
+          <td width="100">ID</td>
+          <td width="100">姓名</td>
+          <td width="100">年龄</td>
+          <td width="100">性别</td>
+          <td width="120">问诊时间</td>
+          <td width="100">最近血糖</td>
+        </tr>
+        <tr>
+          <td>0121</td>
+          <td>李振</td>
+          <td>65</td>
+          <td>男</td>
+          <td>2020/9/23</td>
+          <td>控制差</td>
+          <td><button></button></td>
+          <td><button></button></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+{% endblock %}

@@ -21,10 +21,12 @@ from . import views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     url(r'^$', views.overall),
+    url(r'^login$', views.login),
     url(r'^index$', views.overall),
     url(r'^individual$', views.individual),
     url(r'^overall$', views.pienest),
     url(r'^pie-nest$', views.pienest),
+    url(r'^manage$', views.manage),
     url(r'^num_diabetes_complication$', views.scatterData,
         name='num_diabetes_complication'),
     url(r'^get_patient_info$', views.getPatientInfo, name='get_patient_info'),

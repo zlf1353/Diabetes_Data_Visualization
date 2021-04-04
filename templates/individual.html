@@ -24,7 +24,6 @@
               data: {id: val},
               url: "{% url 'get_patient_info' %}",
               cache: false,
-              {#dataType: "json",#}
               success: function (result) {
                   let data = result['data'];
                   //对患者信息处理替换
@@ -75,7 +74,7 @@
                   $('#text_patient_info').val(newdata);
               },
               error: function (XMLHttpRequest, textStatus) {
-                  {#alert("ajax: " + textStatus);#}
+                  //alert("ajax1: " + textStatus);
               }
           });
           $.ajax({
@@ -85,11 +84,11 @@
               cache: false,
               success: function (result) {
                   let data = result['data'];
-                  console.log(data);
+                  //console.log(data);
                   abnormal_attr_fig.setOption(abnormalAttrOption(data));
               },
               error: function (XMLHttpRequest, textStatus) {
-                  alert("ajax: " + textStatus);
+                  //alert("ajax2: " + textStatus);
               }
           });
           $.ajax({
@@ -97,7 +96,6 @@
               data: {id: val},
               url: "{% url 'get_radar_info' %}",
               cache: false,
-              {#dataType: "json",#}
               success: function (result) {
                   radar_info_data = result['data'];
 
@@ -109,7 +107,12 @@
                   /*radar_fig1.setOption(radarOption(data[1]));*/
               },
               error: function (XMLHttpRequest, textStatus) {
-                  {#alert("ajax: " + textStatus);#}
+                  //alert("ajax3: " + textStatus);
+                  $('#text_patient_info').val('无此患者id信息');
+                  abnormal_attr_fig.clear();
+                  radar_line.clear();
+                  radar_fig.clear();
+                  document.getElementById("radar_line_id").innerHTML = ''
               }
           });
           
@@ -206,9 +209,6 @@
   function changeroles(role) {
     var radar_info_id = role.value
     radar_info_id = Number(radar_info_id)
-    radar_line.setOption(radarLineOption(eval(radar_info_data[radar_info_id + 1].join("+")) / radar_info_data[radar_info_id + 1].length));
-    document.getElementById("radar_line_id").innerHTML = 'ID:' + radar_info_id;
-    radar_fig.setOption(radarOption(radar_info_data[radar_info_id + 1]));
     $.ajax({
               type: "POST",
               data: {id: radar_info_id},
@@ -264,9 +264,13 @@
                   $('#similar_patient_info').val(newdata);
               },
               error: function (XMLHttpRequest, textStatus) {
-                  alert("ajax: " + textStatus)
+                $('#similar_patient_info').val('无此患者id信息');
               }
           });
+    radar_line.setOption(radarLineOption(eval(radar_info_data[radar_info_id + 1].join("+")) / radar_info_data[radar_info_id + 1].length));
+    document.getElementById("radar_line_id").innerHTML = 'ID:' + radar_info_id;
+    radar_fig.setOption(radarOption(radar_info_data[radar_info_id + 1]));
+
   }
 
 

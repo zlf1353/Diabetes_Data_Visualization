@@ -176,6 +176,9 @@ img {
     background-color: rgba(0,0,0,.03);
     border-bottom: 1px solid rgba(111,111,111,.13);
 }
+.card{
+  border-radius: 10px;
+}
 
 .card-header h3 {
     font-weight: 500;
@@ -253,7 +256,7 @@ a {
   z-index: 999; }
 
 .headerbar .headerbar-left {
-    background: #2C50EE;
+    background: #4980b5;
     float: left;
     text-align: center;
     height: 50px;
@@ -267,9 +270,27 @@ a {
     width: auto;
     height: auto;
 }
+
+.headerbar .headerbar-right {
+  background: #4980b5;
+  float: right;
+  text-align: center;
+  height: 50px;
+  position: relative;
+  margin-top: -50px;
+  width: 250px;
+  z-index: 1; }
+ 
+.headerbar .headerbar-right  img {
+  max-width: 100px;
+  height: 50px;
+  text-align: center;
+  width: auto;
+  height: auto;
+}
 	  
 .navbar-custom {
-  background-color: #2C50EE ;/* #4980b5  */
+  background-color: #4980b5 ;/*   */
   border-radius: 0;
   margin-bottom: 0;
   padding: 0 10px;
@@ -293,6 +314,15 @@ a {
   font-size: 20px;
   font-weight: 200;
   text-transform: uppercase;
+  letter-spacing: 1px; 
+  line-height: 48px; }
+
+.logo1 {
+  color: #e3ebf3 !important;
+  font-size: 15px;
+  font-weight: 100;
+  text-transform: uppercase;
+  text-align: center;
   letter-spacing: 1px; 
   line-height: 48px; }
   
@@ -422,7 +452,7 @@ body.adminbody .main-sidebar.left {
     top: 10px !important; }
 
 #sidebar-menu > ul > li > a {
-  color: #b5b5b5;
+  color: #BBBCBE;
   display: block;
   padding: 12px 12px 15px 12px;
   font-weight: 400;
@@ -709,6 +739,7 @@ body.adminbody .main-sidebar.left {
     width: 36px; 
 	margin-bottom: 7px;
 }
+
 
 @media (max-width: 768px) {
 	body {
@@ -1220,3 +1251,5 @@ a.btn:focus {
 .label-info {
     background-color: #5bc0de;
 }
+
+

@@ -1002,7 +1002,6 @@ function radarLineOption (data) {
 }
 
 function abnormalAttrOption (data) {
-  console.log('data', data)
   function roundDatas (num) {
     var datas = [];
     for (var i = 0; i < num; i++) {
@@ -1070,7 +1069,12 @@ function abnormalAttrOption (data) {
     }
     for (let count = 0; count < data[1][item].length; count++) {
       //因为从0开始，所以要先加
-      index2 += count
+      //增加判断条件， 如果是index2 += count 会出现+2的情况，2编号不绘图
+      if(count>0){
+        index2 += 1
+      }
+      
+      console.log(details[index2],index2,count)
       details[index2].itemStyle = {
         color: color[colorindex]
       }
