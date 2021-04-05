@@ -145,7 +145,6 @@
   //点击跳转到详情页
   blood_pressure_fig.on('click', function (params) {
     if (params.componentType == 'xAxis') {
-      console.log('click', params.value)
       //页面跳转  ? 分隔实际的URL和参数 
       window.location.href = `individual?id=${params.value}`
     }

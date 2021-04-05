@@ -46,13 +46,13 @@
           <td width="100">最近血糖</td>
         </tr>
         <tr>
-          <td id='id'>0121</td>
-          <td id='name'>李振</td>
-          <td id='age'>65</td>
-          <td id='sex'>男</td>
+          <td id='id'>0000</td>
+          <td id='name'>-</td>
+          <td id='age'></td>
+          <td id='sex'></td>
           <td>2020/9/23</td>
           <td>控制差</td>
-          <td><button class="btn btn-default" >查看详情</button></td>
+          <td><button class="btn btn-default" onclick="todetail()">查看详情</button></td>
           <td><img src="../static/images/聊天.png" style="height: 20px;width: 20px;"></td>
         </tr>
       </table>
@@ -97,5 +97,8 @@
               }
           });
         }
+  function todetail(){
+    window.location.href = `individual?id=${document.getElementById("input_patient_id").value}`
+  }
 </script>
 {% endblock %}
