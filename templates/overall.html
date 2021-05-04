@@ -100,18 +100,50 @@
     option.text = dis_index_list[i]
     selected_dis_index.appendChild(option);
   }
-  selected_dis_index.onchange = function () {
-    console.log(selected_dis_index.value)
+  window.onload = function () {
+    $.ajax({
+      type: "POST",
+      data: { id: selected_dis_index.value },
+      url: "{% url 'get_abnormal_disease_index_data' %}",
+      cache: false,
+      success: function (result) {
+        let data = result['data'];
+        //异常指标比例分布
+        let abnormal_disease_index = echarts.init(document.getElementById('abnormal_disease_index'));
+        abnormal_disease_index.resize({
+          width: 300,
+          height: 180
+        });
+        abnormal_disease_index.setOption(genderPieOption(data, 3));
+      },
+      error: function (XMLHttpRequest, textStatus) {
+        //alert("ajax2: " + textStatus);
+      }
+    });
   }
-  //异常指标比例分布
-  let abnormal_disease_index = echarts.init(document.getElementById('abnormal_disease_index'));
-  abnormal_disease_index.resize({
-    width: 300,
-    height: 180
-  });
-  let abnormal_disease_index_data = {{ abnormalDiseaseIndexData| safe }};
 
-  abnormal_disease_index.setOption(genderPieOption(abnormal_disease_index_data, 1));
+  selected_dis_index.onchange = function () {
+    $.ajax({
+      type: "POST",
+      data: { id: selected_dis_index.value },
+      url: "{% url 'get_abnormal_disease_index_data' %}",
+      cache: false,
+      success: function (result) {
+        let data = result['data'];
+        //异常指标比例分布
+        let abnormal_disease_index = echarts.init(document.getElementById('abnormal_disease_index'));
+        abnormal_disease_index.resize({
+          width: 300,
+          height: 180
+        });
+        abnormal_disease_index.setOption(genderPieOption(data, 3));
+      },
+      error: function (XMLHttpRequest, textStatus) {
+        //alert("ajax2: " + textStatus);
+      }
+    });
+  }
+
 </script>
 <script src="{% static 'js/my_echart/options.js' %}"></script>
 <script type="text/javascript">

@@ -26,7 +26,6 @@ def pienest(request):
     ctx['diseaseRelationshipData'] = data_process.relationshipData()
     ctx['genderdistributionData'] = data_process.genderdistributionData()
     ctx['complicationDdistributionData'] = data_process.complicationDdistributionData()
-    ctx['abnormalDiseaseIndexData'] = data_process.getabnormalDiseaseIndexData()
     return render(request, 'pie-nest.html', ctx)
 
 def manage(request):
@@ -70,6 +69,14 @@ def getRadarInfo(request):
     if request.POST:
         id = request.POST['id']
         ret = data_process.getRadarData(id)
+        ret = {'data': ret}
+        ret = JsonResponse(ret)
+        return ret
+
+def abnormalDiseaseIndex(request):
+    if request.POST:
+        id = request.POST['id']
+        ret = data_process.getabnormalDiseaseIndexData(id)
         ret = {'data': ret}
         ret = JsonResponse(ret)
         return ret

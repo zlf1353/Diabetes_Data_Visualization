@@ -1353,13 +1353,20 @@ function pieRingOption (data, id) {
 }
 
 function genderPieOption (data, type) {
-  var firstname, lastname
+  var firstname, lastname,name
   if (type == 1) {
     firstname = '男'
     lastname = '女'
-  } else {
+    name='性别分布'
+  } else if (type == 2){
     firstname = '患并发症'
     lastname = '不患并发症'
+    name='糖尿病视网膜病变分布'
+  }
+  else if (type == 3){
+    firstname = '异常'
+    lastname = '正常'
+    name='异常指标比例分布'
   }
   return {
     title: {
@@ -1374,7 +1381,7 @@ function genderPieOption (data, type) {
     },
     series: [
       {
-        name: '性别分布',
+        name: name,
         type: 'pie',
         radius: '50%',
         data: [

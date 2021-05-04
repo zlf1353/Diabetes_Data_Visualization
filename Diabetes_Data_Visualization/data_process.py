@@ -101,7 +101,7 @@ def genderdistributionData():
     return [boy, girl]
 
 
-def getabnormalDiseaseIndexData():
+def complicationDdistributionData():
     yes = 0
     no = 0
     for index, row in df.iterrows():
@@ -112,11 +112,11 @@ def getabnormalDiseaseIndexData():
     return [yes, no]
 
 
-def getabnormalDiseaseIndexData():
+def getabnormalDiseaseIndexData(id):
     yes = 0
     no = 0
     for index, row in df.iterrows():
-        if int(row['label']):
+        if int(row[id]):
             yes += 1
         else:
             no += 1

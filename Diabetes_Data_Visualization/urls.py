@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^get_patient_info$', views.getPatientInfo, name='get_patient_info'),
     url(r'^get_abnormal_attr$', views.getAbnormalAttr, name='get_abnormal_attr'),
     url(r'^get_radar_info$', views.getRadarInfo, name='get_radar_info'),
+    url(r'^get_abnormal_disease_index_data$', views.abnormalDiseaseIndex, name='get_abnormal_disease_index_data'),
 ]
