@@ -13,13 +13,24 @@
 <body>
   <div class="row" style="margin-bottom: 15px;">
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-      <div class="mycard"></div>
+      <div class="card">
+        <div id='gender_distribution'>
+        </div>
+      </div>
     </div>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-      <div class="mycard"></div>
+      <div class="card">
+        <div id='complication_distribution'>
+        </div>
+      </div>
     </div>
     <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">
-      <div class="mycard"></div>
+      <div class="card">
+        <select id='selected_dis_index'>
+        </select>
+        <div id='abnormal_disease_index'>
+        </div>
+      </div>
     </div>
   </div>
   <div class="row" style="margin-bottom: 15px;">
@@ -73,11 +84,53 @@
 <style>
   .mycard {
     height: 200px;
-    border: 5px solid red;
+    border: 1px solid black;
   }
 </style>
+<script>
+  var dis_index_list = [
+    '血清白蛋白', '谷丙转氨酶', '谷草转氨酶', '直接胆红素', 'GLU1空腹血糖', '糖化血红蛋白', '甘油三酯', '总胆固醇', '碱性磷酸酶', '血肌酐', '高密度脂蛋白胆固醇', '血红蛋白', '红细胞压积', '低密度脂蛋白胆固醇', '纤维蛋白原', '血尿素', '血清尿酸', '血小板', '总胆红素', '总蛋白', '乳酸脱氢酶', '谷氨酰胺转移酶', '凝血酶原时间', '凝血酶原活动度', '部分活化凝血酶原时间', '间接胆红素', '球蛋白'
+  ]
+  let index_list = ['ALB1', 'ALT1', 'AST1', 'DBILI1', 'GLU1', 'HBA1C1', 'TG1', 'TC1', 'ALP1', 'SCR1', 'HDL_C1', 'HB1', 'PCV1', 'LDL_C1', 'FBG1', 'BU1', 'SUA1', 'PLT1', 'TBILI1', 'TP1', 'LDH_L1', 'GGT1', 'PT1', 'PTA1', 'APTT1', 'IBILI1', 'GLO1'
+  ]
+  var selected_dis_index = document.getElementById('selected_dis_index')
+  for (let i = 0; i < dis_index_list.length; i++) {
+    var option = document.createElement("option");
+    option.value = index_list[i]
+    option.text = dis_index_list[i]
+    selected_dis_index.appendChild(option);
+  }
+  selected_dis_index.onchange = function () {
+    console.log(selected_dis_index.value)
+  }
+  //异常指标比例分布
+  let abnormal_disease_index = echarts.init(document.getElementById('abnormal_disease_index'));
+  abnormal_disease_index.resize({
+    width: 300,
+    height: 180
+  });
+  let abnormal_disease_index_data = {{ abnormalDiseaseIndexData| safe }};
+
+  abnormal_disease_index.setOption(genderPieOption(abnormal_disease_index_data, 1));
+</script>
 <script src="{% static 'js/my_echart/options.js' %}"></script>
 <script type="text/javascript">
+  //性别分布
+  let gender_distribution = echarts.init(document.getElementById('gender_distribution'));
+  gender_distribution.resize({
+    width: 300,
+    height: 200
+  });
+  let gender_distribution_data = {{ genderdistributionData| safe }};
+  gender_distribution.setOption(genderPieOption(gender_distribution_data, 1));
+  //并发症分布
+  let complication_distribution = echarts.init(document.getElementById('complication_distribution'));
+  complication_distribution.resize({
+    width: 300,
+    height: 200
+  });
+  let complication_distribution_data = {{ complicationDdistributionData| safe }};
+  complication_distribution.setOption(genderPieOption(complication_distribution_data, 2));
   //并发症柱状图
   let bar_fig = echarts.init(document.getElementById('bar_fig'));
   bar_fig.resize({

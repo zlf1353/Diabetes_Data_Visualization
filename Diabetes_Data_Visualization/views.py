@@ -24,6 +24,9 @@ def pienest(request):
     ctx['scatterData'] = data_process.scatterData()
     ctx['bloodPressureData'] = data_process.bloodPressureData()
     ctx['diseaseRelationshipData'] = data_process.relationshipData()
+    ctx['genderdistributionData'] = data_process.genderdistributionData()
+    ctx['complicationDdistributionData'] = data_process.complicationDdistributionData()
+    ctx['abnormalDiseaseIndexData'] = data_process.getabnormalDiseaseIndexData()
     return render(request, 'pie-nest.html', ctx)
 
 def manage(request):

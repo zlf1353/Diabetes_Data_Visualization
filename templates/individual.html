@@ -19,6 +19,7 @@
           if (val === "")
               return;
           $('#search_similar').val("")
+          $('#similar_patient_info').val("")
           $.ajax({
               type: "POST",
               data: {id: val},
@@ -41,9 +42,9 @@
                   newdata[2][0] = '年龄'
                   newdata[3][0] = '性别'
                   if (newdata[3][1] == '0') {
-                    newdata[3][1] = '男'
-                  } else {
                     newdata[3][1] = '女'
+                  } else {
+                    newdata[3][1] = '男'
                   }
                   newdata[3][0] = '性别'
                   newdata[4][0] = '民族'
@@ -231,9 +232,9 @@
                   newdata[2][0] = '年龄'
                   newdata[3][0] = '性别'
                   if (newdata[3][1] == '0') {
-                    newdata[3][1] = '男'
-                  } else {
                     newdata[3][1] = '女'
+                  } else {
+                    newdata[3][1] = '男'
                   }
                   newdata[3][0] = '性别'
                   newdata[4][0] = '民族'

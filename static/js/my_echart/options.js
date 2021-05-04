@@ -1070,11 +1070,11 @@ function abnormalAttrOption (data) {
     for (let count = 0; count < data[1][item].length; count++) {
       //因为从0开始，所以要先加
       //增加判断条件， 如果是index2 += count 会出现+2的情况，2编号不绘图
-      if(count>0){
+      if (count > 0) {
         index2 += 1
       }
-      
-      console.log(details[index2],index2,count)
+
+      console.log(details[index2], index2, count)
       details[index2].itemStyle = {
         color: color[colorindex]
       }
@@ -1292,7 +1292,6 @@ function pieRingOption (data, id) {
     'MEN',
     'BILIARY_TRACT_DISEASE',
     'A_S',]
-  console.log((data[2][index[1]]), id, index[1])
   return {
     legend: {
       left: 0,
@@ -1348,6 +1347,47 @@ function pieRingOption (data, id) {
             value: 300 - data[2][index[id]], name: '无病比例',
           },
         ]
+      }
+    ]
+  }
+}
+
+function genderPieOption (data, type) {
+  var firstname, lastname
+  if (type == 1) {
+    firstname = '男'
+    lastname = '女'
+  } else {
+    firstname = '患并发症'
+    lastname = '不患并发症'
+  }
+  return {
+    title: {
+      //text: '性别分布'
+    },
+    tooltip: {
+      trigger: 'item'
+    },
+    legend: {
+      orient: 'vertical',
+      left: 'left',
+    },
+    series: [
+      {
+        name: '性别分布',
+        type: 'pie',
+        radius: '50%',
+        data: [
+          { value: data[0], name: firstname },
+          { value: data[1], name: lastname },
+        ],
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        }
       }
     ]
   }
