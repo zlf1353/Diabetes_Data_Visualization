@@ -8,7 +8,7 @@ function barLineOption (data, percent_y) {
     grid: {
       left: 40,
       right: 48,
-      top: 64,
+      top: 80,
       bottom: 40
     },
     legend: {
@@ -71,10 +71,10 @@ function barLineOption (data, percent_y) {
         show: true,
         xAxisIndex: [0],
       },
-      {
+      /*{
         type: 'inside',
         xAxisIndex: [0],
-      },
+      },*/
     ],
     series: [
       {
@@ -194,8 +194,6 @@ function bloodPressureOption (data) {
         }
 
       }
-      // console.log(value)
-
     },
     legend: {
       left: 0,

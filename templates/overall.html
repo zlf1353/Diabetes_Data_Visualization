@@ -79,7 +79,7 @@
         </div>
       </div>
     </div>
-
+  </div>
 </body>
 <style>
   .mycard {
@@ -89,7 +89,7 @@
 </style>
 <script>
   var dis_index_list = [
-    '血清白蛋白', '谷丙转氨酶', '谷草转氨酶', '直接胆红素', 'GLU1空腹血糖', '糖化血红蛋白', '甘油三酯', '总胆固醇', '碱性磷酸酶', '血肌酐', '高密度脂蛋白胆固醇', '血红蛋白', '红细胞压积', '低密度脂蛋白胆固醇', '纤维蛋白原', '血尿素', '血清尿酸', '血小板', '总胆红素', '总蛋白', '乳酸脱氢酶', '谷氨酰胺转移酶', '凝血酶原时间', '凝血酶原活动度', '部分活化凝血酶原时间', '间接胆红素', '球蛋白'
+    '血清白蛋白', '谷丙转氨酶', '谷草转氨酶', '直接胆红素', '空腹血糖', '糖化血红蛋白', '甘油三酯', '总胆固醇', '碱性磷酸酶', '血肌酐', '高密度脂蛋白胆固醇', '血红蛋白', '红细胞压积', '低密度脂蛋白胆固醇', '纤维蛋白原', '血尿素', '血清尿酸', '血小板', '总胆红素', '总蛋白', '乳酸脱氢酶', '谷氨酰胺转移酶', '凝血酶原时间', '凝血酶原活动度', '部分活化凝血酶原时间', '间接胆红素', '球蛋白'
   ]
   let index_list = ['ALB1', 'ALT1', 'AST1', 'DBILI1', 'GLU1', 'HBA1C1', 'TG1', 'TC1', 'ALP1', 'SCR1', 'HDL_C1', 'HB1', 'PCV1', 'LDL_C1', 'FBG1', 'BU1', 'SUA1', 'PLT1', 'TBILI1', 'TP1', 'LDH_L1', 'GGT1', 'PT1', 'PTA1', 'APTT1', 'IBILI1', 'GLO1'
   ]
@@ -170,6 +170,7 @@
     height: 300
   });
   let bar_data = {{ num_diabetes_complication| safe }};
+  console.log(bar_data)
   bar_fig.setOption(barLineOption(bar_data, 5));
   /*bar_fig.on('legendselectchanged', function (params) {
     male = params.selected['男性患并发症'] || params.selected['男性无并发症'];
@@ -358,6 +359,31 @@
         }
     blood_pressure_fig.setOption(bloodPressureOption(bloodPressureData), true)
   });
+
+  var sortArray = function (nums) {
+    var left = 0
+    let right = nums.length - 1
+    quicksort(nums, left, right)
+    return nums
+  };
+  function quicksort(nums, left, right) {
+    if (left > right) return
+    let mid = findmid(nums, left, right)
+    quicksort(nums, left, mid - 1)
+    quicksort(nums, mid + 1, right)
+  };
+  function findmid(nums, left, right) {
+    let leftindex = left
+    let pivot = nums[right]
+    for (let i = left; i < right; i++) {
+      if (nums[i] < pivot) {
+        [nums[i], nums[leftindex]] = [nums[leftindex], nums[i]]
+        leftindex++
+      }
+    }
+    [nums[right], nums[leftindex]] = [nums[leftindex], nums[right]]
+    return leftindex
+  }
 
 </script>
 {% endblock %}

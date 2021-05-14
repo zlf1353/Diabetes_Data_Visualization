@@ -350,9 +350,7 @@ a {
 
 .main-sidebar.left {
   position: absolute; 
-  /*融合需要background-color: #BBBCBE;*/
-  
-  height: 1570px;}
+  height: 750px;}
 
 body.adminbody .main-sidebar.left {
   bottom: 0px;

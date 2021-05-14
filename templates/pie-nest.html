@@ -103,7 +103,7 @@
         checkid -= 1
       }
     });
-    var option;
+    var myoption;
     var op = 0
     var legenddata = [ //节点数据
       {
@@ -3664,7 +3664,7 @@
 
         ],
      
-    option = {
+    myoption = {
       backgroundColor: '#fff',
       title: {
         text: '',
@@ -3757,14 +3757,14 @@
 
     function selectedchange() {
       var value = document.getElementById("selected").value;
-      option['legend'][0]['data'] = legenddata.slice(0, value)
-      option['series'][0]['data'] = itemdata.slice(0, value)
-      //option['series'][0]['data'] = itemdata.slice(0, value)
-      option['series'][0]['categories'] = categoriesdata.slice(0, value)
-      myChart.setOption(option, true);
+      myoption['legend'][0]['data'] = legenddata.slice(0, value)
+      myoption['series'][0]['data'] = itemdata.slice(0, value)
+      //myoption['series'][0]['data'] = itemdata.slice(0, value)
+      myoption['series'][0]['categories'] = categoriesdata.slice(0, value)
+      myChart.setOption(myoption, true);
     }
-    if (option && typeof option === 'object') {
-      myChart.setOption(option);
+    if (myoption && typeof myoption === 'object') {
+      myChart.setOption(myoption);
     }
 
   </script>

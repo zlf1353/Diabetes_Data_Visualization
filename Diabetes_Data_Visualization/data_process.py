@@ -41,7 +41,7 @@ def barData(left=0, right=len(fs) - 1):
     女性0 男性1
     无并发症0 患并发症1
     Case_ID	 label AGE	SEX
-    0       1           2           3           4           5       6       7                 8
+    0       1           2           3             4           5       6            7          8
     年龄段 n女性无并发症 n女性患并发症 n男性无并发症 n男性患并发症 患病比例 女性患病比例 男性患病比例 患并发症占当前年龄段人口比例
     '''
     res = [[xAxis[i], 0, 0, 0, 0, 0, 0, 0, 0] for i in range(len(fs))]
