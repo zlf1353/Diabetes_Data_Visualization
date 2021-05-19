@@ -33,12 +33,13 @@
       </div>
     </div>
   </div>
+ 
   <div class="row" style="margin-bottom: 15px;">
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <div class="card mb-3">
         <div class="card-body">
+          <div id="bar_fig"></div>
           <div style="float: left;width: 100%;">
-            <div id="bar_fig"></div>
             <!--血压哑铃图-->
             <div class="row">
               <div class="col-sm-10">
@@ -49,13 +50,13 @@
                 <div style="margin-top: 50px;">
                   <div class="radio">
                     <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>按ID升序
+                      <input type="radio" name="optionsRadios" id="optionsRadios1" value="0" checked>Ascending by ID
                     </label>
                     <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="7">按年龄升序
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="7">Ascending by Age
                     </label>
                     <label>
-                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="9">按BMI升序
+                      <input type="radio" name="optionsRadios" id="optionsRadios2" value="9">Ascending by BMI
                     </label>
                   </div>
                 </div>
@@ -71,7 +72,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <div class="card mb-3">
         <div class="card-body">
           {% block ralationbody %}
@@ -166,11 +167,10 @@
   //并发症柱状图
   let bar_fig = echarts.init(document.getElementById('bar_fig'));
   bar_fig.resize({
-    width: 400,
-    height: 300
+    width: 800,
+    height: 400
   });
   let bar_data = {{ num_diabetes_complication| safe }};
-  console.log(bar_data)
   bar_fig.setOption(barLineOption(bar_data, 5));
   /*bar_fig.on('legendselectchanged', function (params) {
     male = params.selected['男性患并发症'] || params.selected['男性无并发症'];
@@ -222,7 +222,7 @@
   //血压哑铃图
   let blood_pressure_fig = echarts.init(document.getElementById('blood_pressure_fig'));
   blood_pressure_fig.resize({
-    width: 400,
+    width: 800,
     height: 410
   });
 

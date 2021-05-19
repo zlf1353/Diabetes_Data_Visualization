@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^login$', views.login),
     url(r'^index$', views.overall),
     url(r'^individual$', views.individual),
-    url(r'^overall$', views.pienest),
+    url(r'^overall$', views.overall),
     url(r'^pie-nest$', views.pienest),
     url(r'^manage$', views.manage),
     url(r'^num_diabetes_complication$', views.scatterData,

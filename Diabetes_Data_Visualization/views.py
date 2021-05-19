@@ -15,6 +15,9 @@ def overall(request):
     ctx['scatterData'] = data_process.scatterData()
     ctx['bloodPressureData'] = data_process.bloodPressureData()
     ctx['diseaseRelationshipData'] = data_process.relationshipData()
+
+    ctx['genderdistributionData'] = data_process.genderdistributionData()
+    ctx['complicationDdistributionData'] = data_process.complicationDdistributionData()
     return render(request, 'overall.html', ctx)
 
 

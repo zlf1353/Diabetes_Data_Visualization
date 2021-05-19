@@ -295,7 +295,7 @@ def getPatientInfo(id):
     '''
 
 attr = {
-    '肝功能': [
+    'liver function': [
         'ALB',
         'ALP',
         'ALT',
@@ -308,19 +308,19 @@ attr = {
         'TBILI',
         'TP',
     ],
-    '凝血相关': [
+    'Coagulation related': [
         'APTT',
         'FBG',
         'FIBRIN',
         'PT',
         'PTA',
     ],
-    '其他': [
+    'other': [
         'CA199',
         'ESR',
         'LPS',
     ],
-    '肾功能': [
+    'renal function': [
         'ALB_CR',
         'BU',
         'BUN',
@@ -329,19 +329,19 @@ attr = {
         'UCR',
         'UPR_24',
     ],
-    '生化': [
+    'biochemistry': [
         'HDL_C',
         'LDL_C',
         'LP_A',
         'TC',
         'TG',
     ],
-    '血常规': [
+    'routine blood test': [
         'HB',
         'PCV',
         'PLT',
     ],
-    '血糖相关': [
+    'blood glucose related': [
         'GLU_2H',
         'GSP',
         'HBA1C',
@@ -477,7 +477,6 @@ def getRadarData(id):
     dimsSimilarityData = np.array(dimsSimilarityData).T
     # print('dimsSimilarityData',dimsSimilarityData)
     a = np.argsort(-np.sum(dimsSimilarityData, axis=1))
-    # print('a',a)
     for i in range(1, 2):
         Case_ID = df.iloc[a[i]]['Case_ID']
         data.append(list(dimsSimilarityData[a[i]] * 10000 // 1 / 100))

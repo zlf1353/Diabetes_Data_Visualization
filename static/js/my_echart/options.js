@@ -2,18 +2,22 @@
 
 function barLineOption (data, percent_y) {
   return {
+    title: {
+      text: "Large Sample Analysis of Diabetic Patients",
+    },
     dataset: {
       source: data
     },
     grid: {
       left: 40,
       right: 48,
-      top: 80,
+      top: 140,
       bottom: 40
     },
     legend: {
+      show: true,
       left: 0,
-      top: 4,
+      top: '10%',
     },
     xAxis: {
       type: "category"
@@ -21,16 +25,16 @@ function barLineOption (data, percent_y) {
     tooltip: {
       show: true,
       formatter: (value) => {
-        return value['data'][0] + '岁' + '<br />' +
-          '糖尿病患者比例:' + value['data'][5] + '<br />' +
-          '并发症患者比例:' + value['data'][8] + '<br />' +
-          '患并发症:' + (value['data'][2] + value['data'][4]) + '<br />' +
-          '无并发症:' + (value['data'][1] + value['data'][3]) + '<br />'
+        return value['data'][0] + 'years old' + '<br />' +
+          'Proportion of patients with diabetes:' + value['data'][5] + '<br />' +
+          'Proportion of patients with complications:' + value['data'][8] + '<br />' +
+          'Complications:' + (value['data'][2] + value['data'][4]) + '<br />' +
+          'No complication:' + (value['data'][1] + value['data'][3]) + '<br />'
       }
     },
     yAxis: [
       {
-        name: "比例（%）",
+        name: "proportion（%）",
         type: "value",
         splitLine: {
           show: false,
@@ -48,7 +52,7 @@ function barLineOption (data, percent_y) {
         },
       },
       {
-        name: "数量",
+        name: "number",
         type: "value",
         splitLine: {
           show: false,
@@ -62,7 +66,7 @@ function barLineOption (data, percent_y) {
           textStyle: {
             color: "#111",
           },
-          formatter: '{value} 人'
+          formatter: '{value} '
         },
       }],
     dataZoom: [
@@ -81,7 +85,7 @@ function barLineOption (data, percent_y) {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "女性无并发症",
+        name: "Female Without Complications",
         itemStyle: {
           color: '#94A7F6'//"rgb(168,143,11)"
         },
@@ -95,7 +99,7 @@ function barLineOption (data, percent_y) {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "女性患并发症",
+        name: "Female With Complications",
         itemStyle: {
           //使用透明度时，高亮会消失
           color: '#F9C6AF'// "rgb(168,143,5)"
@@ -110,7 +114,7 @@ function barLineOption (data, percent_y) {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "男性无并发症",
+        name: "Male Without Complications",
         itemStyle: {
           color: '#516FF1'//"rgb(17,116,101)"
         },
@@ -124,7 +128,7 @@ function barLineOption (data, percent_y) {
         type: "bar",
         barWidth: "60%",
         stack: true,
-        name: "男性患并发症",
+        name: "Male With Complications",
         itemStyle: {
           color: '#F7AC8B'//"rgb(17,116,95)"
         },
@@ -136,7 +140,7 @@ function barLineOption (data, percent_y) {
       },
       {
         type: "line",
-        name: "糖尿病患病比例",
+        name: "Prevalence of Diabetes",
         yAxisIndex: 0,
         encode: {
           x: 0,
@@ -148,7 +152,7 @@ function barLineOption (data, percent_y) {
       },
       {
         type: "line",
-        name: "并发症患病比例",
+        name: "Prevalence of Complication",
         yAxisIndex: 0,
         encode: {
           x: 0,
@@ -179,17 +183,17 @@ function bloodPressureOption (data) {
       },
       formatter: (value) => {
         if (isXLabel) {
-          return '查看详情'
+          return 'View Details'
         } else {
           let sex = ''
           if (value['0']['data'][8]) {
-            sex = '女'
-          } else { sex = '男' }
-          return 'Case_ID:' + value['0']['data'][0] + '<br />' + '性别:' + sex + '<br />' +
-            '年龄:' + value['0']['data'][7] + '<br />' +
+            sex = 'girl'
+          } else { sex = 'boy' }
+          return 'Case_ID:' + value['0']['data'][0] + '<br />' + 'Sex:' + sex + '<br />' +
+            'Age:' + value['0']['data'][7] + '<br />' +
             'BMI:' + value['0']['data'][9] + '<br />' +
-            '身高:' + value['0']['data'][12] + '<br />' +
-            '血压（收缩压、舒张压）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
+            'Height:' + value['0']['data'][12] + '<br />' +
+            'Blood Pressure(Systolic Pressure、Diastolic Pressure）:' + value['0']['data'][3] + '/' + value['0']['data'][2]
 
         }
 
@@ -232,7 +236,7 @@ function bloodPressureOption (data) {
       {
         type: "value",
         show: true,
-        name: '血压',
+        name: 'blood pressure',
         position: 'left',
         nameLocation: 'end',
         splitNumber: 5,
@@ -260,7 +264,7 @@ function bloodPressureOption (data) {
       {
         type: "value",
         show: true,
-        name: '体重',
+        name: 'weight',
 
         nameLocation: 'end',
         splitNumber: 5,
@@ -758,6 +762,9 @@ function diseaseRelationshipOption (data) {
 }
 
 function radarOption (data) {
+  for (let i = 0; i < 3; i++) {
+    data[i] = data[i].toFixed(2)
+  }
   var indicatorname = ['diseaseInfo', 'PhysicalIndex', 'PatientsInfo'];
   var maxdata = [100, 100, 100, 100, 100];
 
@@ -782,13 +789,12 @@ function radarOption (data) {
   function innerdata (i) {
     var innerdata = [];
     for (let j = 0; j < data.length; j++) {
-      innerdata.push(100 - 20 * i)
+      innerdata.push((100 - 20 * i).toFixed(2))
     }
     return innerdata;
   }
 
   var optionData = getData(data);
-
   function getData (data) {
     var res = {
       series: [{
@@ -900,7 +906,6 @@ function radarOption (data) {
               fontSize: 10,
               color: '#333',
               align: 'center',
-              // lineHeight: '30',
               fontWeight: 'bold',
             },
             b: {
@@ -912,7 +917,7 @@ function radarOption (data) {
         },
         formatter: function (params, index) {
           var i = contains(indicatorname, params);
-          var percent = data[i] / 100 * 100;
+          var percent = (data[i] / 100 * 100).toFixed(2);
           return '{a|' + percent + '%}\n' + '{b|' + params + '}';
         },
       },
@@ -1043,7 +1048,7 @@ function abnormalAttrOption (data) {
 
   let dis = []
   for (let i of data[2]) {
-    dis.push({ name: nameindex[i] })
+    dis.push({ name: i })
   }
 
   let details = []
@@ -1072,7 +1077,6 @@ function abnormalAttrOption (data) {
         index2 += 1
       }
 
-      console.log(details[index2], index2, count)
       details[index2].itemStyle = {
         color: color[colorindex]
       }
@@ -1100,7 +1104,7 @@ function abnormalAttrOption (data) {
 
   return {
     title: {
-      text: "Abnormal index",
+      text: "Abnormal indicators and disease information of patients",
       top: "top",
       left: "left",
       textStyle: {
@@ -1351,20 +1355,20 @@ function pieRingOption (data, id) {
 }
 
 function genderPieOption (data, type) {
-  var firstname, lastname,name
+  var firstname, lastname, name
   if (type == 1) {
     firstname = '男'
     lastname = '女'
-    name='性别分布'
-  } else if (type == 2){
+    name = '性别分布'
+  } else if (type == 2) {
     firstname = '患并发症'
     lastname = '不患并发症'
-    name='糖尿病视网膜病变分布'
+    name = '糖尿病视网膜病变分布'
   }
-  else if (type == 3){
+  else if (type == 3) {
     firstname = '异常'
     lastname = '正常'
-    name='异常指标比例分布'
+    name = '异常指标比例分布'
   }
   return {
     title: {

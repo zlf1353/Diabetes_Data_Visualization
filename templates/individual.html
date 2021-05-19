@@ -85,7 +85,6 @@
       cache: false,
       success: function (result) {
         let data = result['data'];
-        //console.log(data);
         abnormal_attr_fig.setOption(abnormalAttrOption(data));
       },
       error: function (XMLHttpRequest, textStatus) {
@@ -164,6 +163,7 @@
           <!--下拉菜单-->
           查看相似患者:<br>
           <input type="text" id='search_similar' onchange="changeroles(this)">
+          <button type="button">confirm</button>
           <br>
           <textarea id="similar_patient_info" style="height: 100px" required class="form-control">
           </textarea>
